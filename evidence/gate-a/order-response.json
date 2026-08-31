@@ -1,0 +1,10 @@
+{
+  "_note": "Sample response from POST /api/orders — secrets are NEVER returned",
+  "internal_transaction_id": "txn_1000000000000_abc12",
+  "razorpay_order_id": "order_TestModeXXXXXXXX",
+  "amount_paise": 490000,
+  "currency": "INR",
+  "receipt": "gate_a_1000000000000_ABCDE",
+  "key_id": "rzp_test_XXXXXXXXXXXX",
+  "status": "CHECKOUT_STARTED"
+}

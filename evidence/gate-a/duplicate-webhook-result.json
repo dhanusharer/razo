@@ -1,0 +1,19 @@
+{
+  "_note": "Sample response when the SAME x-razorpay-event-id is sent a second time",
+  "first_delivery": {
+    "status": "ACCEPTED",
+    "message": "payment.captured processed — transaction is now PAID",
+    "webhook_event_id": "GkGNqvInqtHb5Q",
+    "transaction_final_state": "PAID"
+  },
+  "second_delivery_same_event_id": {
+    "status": "DUPLICATE_IGNORED",
+    "statusCode": 200,
+    "message": "Duplicate webhook event — already processed",
+    "webhook_event_id": "GkGNqvInqtHb5Q",
+    "business_side_effects": 0,
+    "transaction_state_unchanged": "PAID"
+  },
+  "idempotency_mechanism": "x-razorpay-event-id stored in in-memory Set on first processing",
+  "note": "In-memory dedup is acceptable for Phase 0 Gate A spike only. Persistent store required for production."
+}

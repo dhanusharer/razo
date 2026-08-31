@@ -1,0 +1,9 @@
+{
+  "_note": "Sample response from POST /api/orders/verify-callback — provisional state only",
+  "verified": true,
+  "internal_transaction_id": "txn_1000000000000_abc12",
+  "razorpay_order_id": "order_TestModeXXXXXXXX",
+  "razorpay_payment_id": "pay_TestModeYYYYYYYY",
+  "status": "PAYMENT_CALLBACK_VERIFIED",
+  "note": "Transaction is NOT yet PAID. Awaiting payment.captured webhook."
+}

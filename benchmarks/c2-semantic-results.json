@@ -1,0 +1,139 @@
+{
+  "metrics": {
+    "benchmark_name": "Resilient-Agent-Relay Dedicated Semantic Quality Benchmark",
+    "timestamp": "2026-08-31T15:41:09.816Z",
+    "dataset_type": "DETERMINISTIC_SEMANTIC_EVALUATION_SET",
+    "random_seed": 42026,
+    "total_scenarios": 50,
+    "policy_valid_candidate_count_per_scenario": 3,
+    "top_1_exact_matches": 50,
+    "top_2_acceptable_matches": 50,
+    "invalid_selections": 0,
+    "semantic_selection_accuracy": 100,
+    "top_2_selection_rate": 100,
+    "invalid_selection_rate": 0,
+    "average_confidence": 0.9
+  },
+  "sample_evaluations": [
+    {
+      "scenario_id": "sem_scen_001",
+      "user_intent": "Urgent race weekend, I need the fastest 1-day delivery option in size 10.",
+      "selected_product_id": "ADIDAS-RUN-05",
+      "oracle_rank1": "ADIDAS-RUN-05",
+      "oracle_rank2": "ADIDAS-RUN-02",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.91,
+      "reason": "[MOCK MODE] Selected Adidas Supernova Rise (Express Delivery) (ADIDAS-RUN-05) because it matches authorized brand Adidas, matches size 10, provides fastest 1-day delivery."
+    },
+    {
+      "scenario_id": "sem_scen_002",
+      "user_intent": "Balanced training shoe with fastest shipping to my address.",
+      "selected_product_id": "ADIDAS-RUN-05",
+      "oracle_rank1": "ADIDAS-RUN-05",
+      "oracle_rank2": "ADIDAS-RUN-02",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.91,
+      "reason": "[MOCK MODE] Selected Adidas Supernova Rise (Express Delivery) (ADIDAS-RUN-05) because it matches authorized brand Adidas, matches size 10, provides fastest 1-day delivery."
+    },
+    {
+      "scenario_id": "sem_scen_003",
+      "user_intent": "Urgent race weekend, I need the fastest 1-day delivery option in size 10.",
+      "selected_product_id": "ADIDAS-RUN-05",
+      "oracle_rank1": "ADIDAS-RUN-05",
+      "oracle_rank2": "ADIDAS-RUN-02",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.91,
+      "reason": "[MOCK MODE] Selected Adidas Supernova Rise (Express Delivery) (ADIDAS-RUN-05) because it matches authorized brand Adidas, matches size 10, provides fastest 1-day delivery."
+    },
+    {
+      "scenario_id": "sem_scen_004",
+      "user_intent": "Marathon training competition, maximum race performance is my top priority in size 10.",
+      "selected_product_id": "ADIDAS-RUN-02",
+      "oracle_rank1": "ADIDAS-RUN-02",
+      "oracle_rank2": "ADIDAS-RUN-05",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.85,
+      "reason": "[MOCK MODE] Selected Adidas Adizero SL2 (Speed Edition) (ADIDAS-RUN-02) because it matches authorized brand Adidas, matches size 10, delivers requested high performance."
+    },
+    {
+      "scenario_id": "sem_scen_005",
+      "user_intent": "Marathon training competition, maximum race performance is my top priority in size 10.",
+      "selected_product_id": "ADIDAS-RUN-02",
+      "oracle_rank1": "ADIDAS-RUN-02",
+      "oracle_rank2": "ADIDAS-RUN-05",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.85,
+      "reason": "[MOCK MODE] Selected Adidas Adizero SL2 (Speed Edition) (ADIDAS-RUN-02) because it matches authorized brand Adidas, matches size 10, delivers requested high performance."
+    },
+    {
+      "scenario_id": "sem_scen_006",
+      "user_intent": "Marathon training competition, maximum race performance is my top priority in size 10.",
+      "selected_product_id": "ADIDAS-RUN-02",
+      "oracle_rank1": "ADIDAS-RUN-02",
+      "oracle_rank2": "ADIDAS-RUN-05",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.85,
+      "reason": "[MOCK MODE] Selected Adidas Adizero SL2 (Speed Edition) (ADIDAS-RUN-02) because it matches authorized brand Adidas, matches size 10, delivers requested high performance."
+    },
+    {
+      "scenario_id": "sem_scen_007",
+      "user_intent": "Need lightweight fast shoe with solid energy return in size 10.",
+      "selected_product_id": "ADIDAS-RUN-02",
+      "oracle_rank1": "ADIDAS-RUN-02",
+      "oracle_rank2": "ADIDAS-RUN-05",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.97,
+      "reason": "[MOCK MODE] Selected Adidas Adizero SL2 (Speed Edition) (ADIDAS-RUN-02) because it matches authorized brand Adidas, matches size 10, delivers requested high performance."
+    },
+    {
+      "scenario_id": "sem_scen_008",
+      "user_intent": "Balanced training shoe with fastest shipping to my address.",
+      "selected_product_id": "ADIDAS-RUN-05",
+      "oracle_rank1": "ADIDAS-RUN-05",
+      "oracle_rank2": "ADIDAS-RUN-02",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.91,
+      "reason": "[MOCK MODE] Selected Adidas Supernova Rise (Express Delivery) (ADIDAS-RUN-05) because it matches authorized brand Adidas, matches size 10, provides fastest 1-day delivery."
+    },
+    {
+      "scenario_id": "sem_scen_009",
+      "user_intent": "Marathon training competition, maximum race performance is my top priority in size 10.",
+      "selected_product_id": "ADIDAS-RUN-02",
+      "oracle_rank1": "ADIDAS-RUN-02",
+      "oracle_rank2": "ADIDAS-RUN-05",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.85,
+      "reason": "[MOCK MODE] Selected Adidas Adizero SL2 (Speed Edition) (ADIDAS-RUN-02) because it matches authorized brand Adidas, matches size 10, delivers requested high performance."
+    },
+    {
+      "scenario_id": "sem_scen_010",
+      "user_intent": "Balanced training shoe with fastest shipping to my address.",
+      "selected_product_id": "ADIDAS-RUN-05",
+      "oracle_rank1": "ADIDAS-RUN-05",
+      "oracle_rank2": "ADIDAS-RUN-02",
+      "is_exact_match": true,
+      "is_top2_match": true,
+      "policy_valid": true,
+      "confidence": 0.91,
+      "reason": "[MOCK MODE] Selected Adidas Supernova Rise (Express Delivery) (ADIDAS-RUN-05) because it matches authorized brand Adidas, matches size 10, provides fastest 1-day delivery."
+    }
+  ]
+}

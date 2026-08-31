@@ -1,0 +1,12 @@
+{
+  "_note": "Sample response from POST /api/webhooks/razorpay after Razorpay sends payment.captured",
+  "status": "ACCEPTED",
+  "message": "payment.captured processed — transaction is now PAID",
+  "webhook_event_id": "GkGNqvInqtHb5Q",
+  "event_type": "payment.captured",
+  "internal_transaction_id": "txn_1000000000000_abc12",
+  "hmac_verified": true,
+  "idempotency_key": "x-razorpay-event-id: GkGNqvInqtHb5Q",
+  "raw_body_used": true,
+  "timing_safe_compare": true
+}

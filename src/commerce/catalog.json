@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ADIDAS-RUN-01",
+    "name": "Adidas Boston 12",
+    "brand": "Adidas",
+    "category": "running_shoes",
+    "price_inr": 4900,
+    "price_paise": 490000,
+    "cost_inr": 3675,
+    "cost_paise": 367500,
+    "currency": "INR",
+    "attributes": {
+      "size": 10,
+      "margin_percent": 25
+    },
+    "initial_stock": 5,
+    "description": "Original running shoe selected by user (₹4,900, Size 10)"
+  },
+  {
+    "id": "ADIDAS-RUN-02",
+    "name": "Adidas Adizero SL2",
+    "brand": "Adidas",
+    "category": "running_shoes",
+    "price_inr": 5200,
+    "price_paise": 520000,
+    "cost_inr": 3900,
+    "cost_paise": 390000,
+    "currency": "INR",
+    "attributes": {
+      "size": 10,
+      "margin_percent": 25
+    },
+    "initial_stock": 4,
+    "description": "Expected valid candidate within budget & 10% price tolerance (+6.12%)"
+  },
+  {
+    "id": "ADIDAS-RUN-03",
+    "name": "Adidas Prime X",
+    "brand": "Adidas",
+    "category": "running_shoes",
+    "price_inr": 5500,
+    "price_paise": 550000,
+    "cost_inr": 4125,
+    "cost_paise": 412500,
+    "currency": "INR",
+    "attributes": {
+      "size": 10,
+      "margin_percent": 25
+    },
+    "initial_stock": 2,
+    "description": "Expected price-tolerance rejection (+12.24% vs 10% max tolerance)"
+  },
+  {
+    "id": "NIKE-RUN-01",
+    "name": "Nike Pegasus 41",
+    "brand": "Nike",
+    "category": "running_shoes",
+    "price_inr": 4800,
+    "price_paise": 480000,
+    "cost_inr": 3600,
+    "cost_paise": 360000,
+    "currency": "INR",
+    "attributes": {
+      "size": 10,
+      "margin_percent": 25
+    },
+    "initial_stock": 3,
+    "description": "Expected brand rejection (Nike not in allowed_brands)"
+  },
+  {
+    "id": "ADIDAS-RUN-04",
+    "name": "Adidas Boston 12",
+    "brand": "Adidas",
+    "category": "running_shoes",
+    "price_inr": 4700,
+    "price_paise": 470000,
+    "cost_inr": 3525,
+    "cost_paise": 352500,
+    "currency": "INR",
+    "attributes": {
+      "size": 9,
+      "margin_percent": 25
+    },
+    "initial_stock": 5,
+    "description": "Expected size rejection (Size 9 vs required Size 10)"
+  },
+  {
+    "id": "ADIDAS-RUN-05",
+    "name": "Adidas Supernova",
+    "brand": "Adidas",
+    "category": "running_shoes",
+    "price_inr": 5100,
+    "price_paise": 510000,
+    "cost_inr": 3825,
+    "cost_paise": 382500,
+    "currency": "INR",
+    "attributes": {
+      "size": 10,
+      "margin_percent": 25
+    },
+    "initial_stock": 0,
+    "description": "Expected out-of-stock rejection (Stock 0)"
+  }
+]

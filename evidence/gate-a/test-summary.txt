@@ -1,0 +1,53 @@
+GATE A — AUTOMATED TEST SUMMARY
+Generated: 2026-08-30
+Runner: Vitest v3.2.7
+
+══════════════════════════════════════════════════════
+STATUS: ALL 17 TESTS PASSED (0 FAILED)
+══════════════════════════════════════════════════════
+
+Test File: tests/gate-a.test.ts
+Duration: ~840ms
+
+RESULTS BY SPEC:
+────────────────────────────────────────────────────────
+TEST A1 — Valid webhook signature accepted
+  ✓  should return valid:true for correctly signed raw body                 PASS
+
+TEST A2 — Invalid webhook signature rejected
+  ✓  should return valid:false for tampered body                            PASS
+  ✓  should return valid:false for wrong secret                             PASS
+  ✓  should return valid:false for empty signature                          PASS
+
+TEST A3 — Duplicate x-razorpay-event-id causes zero side effects
+  ✓  first event is processed, second is DUPLICATE_IGNORED                 PASS
+
+TEST A4 — Valid payment.captured transitions transaction to PAID
+  ✓  transaction reaches PAID state after verified webhook                 PASS
+
+TEST A5 — Invalid webhook signature leaves state unchanged
+  ✓  transaction state is NOT mutated by invalid webhook                   PASS
+
+TEST A6 — Checkout callback payment signature
+  ✓  accepts a correctly computed checkout signature                       PASS
+  ✓  rejects a tampered checkout signature                                 PASS
+  ✓  rejects mismatched payment ID in signature                            PASS
+
+TEST A7 — Order creation validates amount and currency
+  ✓  accepts valid paise amount and INR currency                           PASS
+  ✓  accepts amount_inr and converts to paise                              PASS
+  ✓  rejects zero amount                                                   PASS
+  ✓  rejects negative amount                                               PASS
+  ✓  rejects non-integer paise amount                                      PASS
+  ✓  rejects non-INR currency                                              PASS
+  ✓  rejects missing amount                                                PASS
+
+────────────────────────────────────────────────────────
+Total: 17 passed | 0 failed | 0 skipped
+Test type: LOCAL UNIT TESTS (no Razorpay API calls)
+────────────────────────────────────────────────────────
+
+NOTE ON LIVE TEST:
+Live Razorpay Test Mode verification is BLOCKED until credentials
+are provided in .env (RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET,
+RAZORPAY_WEBHOOK_SECRET). The implementation is complete and ready.
