@@ -20,7 +20,6 @@
       --warning-bg: rgba(245, 158, 11, 0.1);
       --danger: #ef4444;
       --danger-bg: rgba(239, 68, 68, 0.1);
-      --razorpay: #0c2340;
       --razorpay-blue: #3395ff;
     }
 
@@ -66,6 +65,7 @@
       display: flex;
       gap: 0.5rem;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     /* Badges */
@@ -75,7 +75,7 @@
       gap: 0.25rem;
       padding: 0.25rem 0.6rem;
       border-radius: 9999px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -85,7 +85,7 @@
     .badge-red    { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
     .badge-blue   { background: rgba(59, 130, 246, 0.1); color: var(--accent); border: 1px solid var(--accent); }
     .badge-purple { background: rgba(168, 85, 247, 0.1); color: #c084fc; border: 1px solid #a855f7; }
-    .badge-orange { background: rgba(249, 115, 22, 0.1); color: #fb923c; border: 1px solid #f97316; }
+    .badge-gray   { background: rgba(55, 65, 81, 0.5); color: #d1d5db; border: 1px solid #4b5563; }
 
     /* Section Cards */
     .section-title {
@@ -103,6 +103,12 @@
       padding: 1.25rem;
       margin-bottom: 1.5rem;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+    .card-benchmark {
+      border-left: 4px solid #8b5cf6;
+    }
+    .card-live {
+      border-left: 4px solid #10b981;
     }
 
     /* KPI Grid */
@@ -126,13 +132,13 @@
       margin-bottom: 0.25rem;
     }
     .kpi-value {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: var(--text);
       font-family: 'SFMono-Regular', Consolas, monospace;
     }
     .kpi-sub {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
       margin-top: 0.25rem;
     }
@@ -162,10 +168,10 @@
     .btn-warning { background: linear-gradient(135deg, #d97706, #b45309); color: #fff; }
     .btn-fixture { background: rgba(55, 65, 81, 0.8); color: var(--text); border: 1px solid var(--card-border); }
 
-    /* Pipeline Visualization */
+    /* Pipeline Visualization (10 Steps) */
     .pipeline-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 0.75rem;
       margin-bottom: 1rem;
     }
@@ -197,19 +203,19 @@
       margin-bottom: 0.2rem;
     }
     .step-title {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       margin-bottom: 0.25rem;
     }
     .step-desc {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
     }
 
     /* Details Grid */
     .details-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 1.25rem;
     }
     @media (max-width: 900px) {
@@ -230,7 +236,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      max-height: 380px;
+      max-height: 420px;
       overflow-y: auto;
       padding-right: 0.5rem;
     }
@@ -273,57 +279,58 @@
         <div class="brand-subtitle">Autonomous Commerce Recovery with Deterministic Policy Precedence & Razorpay Checkout</div>
       </div>
       <div class="header-badges">
-        <span class="badge badge-green" id="header-provenance">PROVENANCE: LIVE</span>
-        <span class="badge badge-blue">LIVE TEST MODE</span>
-        <span class="badge badge-purple">GEMINI 2.0 FLASH</span>
+        <span class="badge badge-green">ENVIRONMENT: LIVE TEST MODE</span>
+        <span class="badge badge-blue">PAYMENT GATEWAY: RAZORPAY</span>
+        <span class="badge badge-purple">AI: GOOGLE GEMINI</span>
+        <span class="badge badge-gray" id="header-model-badge">MODEL: gemini-2.0-flash</span>
       </div>
     </header>
 
-    <!-- VIEW 1: MERCHANT BUSINESS OVERVIEW -->
-    <section class="card">
+    <!-- SECTION A: MERCHANT ECONOMIC BENCHMARK -->
+    <section class="card card-benchmark">
       <div class="section-title">
-        <span>📊 View 1 — Merchant Business Overview</span>
-        <span class="badge badge-blue" id="metrics-provenance-badge">SYNTHETIC BENCHMARK</span>
+        <span>📊 Area A — Merchant Economic Benchmark</span>
+        <span class="badge badge-purple">PROVENANCE: SYNTHETIC BENCHMARK (500 SESSIONS)</span>
       </div>
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-label">Recovered GMV</div>
           <div class="kpi-value" id="kpi-gmv">₹1,045,200</div>
-          <div class="kpi-sub" id="kpi-gmv-rate">GMV Recovery Rate: 63.3% [SYNTHETIC]</div>
+          <div class="kpi-sub" id="kpi-gmv-rate">GMV Recovery Rate: 63.30% [SYNTHETIC]</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Autonomous Recovery Rate</div>
-          <div class="kpi-value" id="kpi-recovery-rate">59.6%</div>
-          <div class="kpi-sub" id="kpi-recovered-count">201 / 337 Recovered [SYNTHETIC]</div>
+          <div class="kpi-value" id="kpi-recovery-rate">59.64%</div>
+          <div class="kpi-sub" id="kpi-recovered-count">201 / 337 eligible failures [SYNTHETIC]</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Gross Margin Recovered</div>
           <div class="kpi-value" id="kpi-margin">₹261,300</div>
-          <div class="kpi-sub" id="kpi-margin-rate">Avg Margin: 25.0% [Authoritative Catalog]</div>
+          <div class="kpi-sub">Avg Margin: 25.00% [Authoritative Catalog]</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Unauthorized Transactions</div>
           <div class="kpi-value" style="color: var(--success);" id="kpi-unauthorized">0</div>
-          <div class="kpi-sub">Target: 0.00% [Strict Policy Gate]</div>
+          <div class="kpi-sub">Target: 0.00% [Strict Policy Enforcement]</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Deterministic Engine Latency</div>
           <div class="kpi-value" id="kpi-engine-latency" style="font-size: 1.15rem;">0.03ms / 0.08ms</div>
-          <div class="kpi-sub">p50 / p95 [LOCAL / SYNTHETIC / MOCK]</div>
+          <div class="kpi-sub">p50 / p95 [LOCAL / SYNTHETIC]</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Live Gemini Decision Latency</div>
           <div class="kpi-value" id="kpi-gemini-latency" style="font-size: 1.15rem; color: #c084fc;">6,257ms / 7,110ms</div>
-          <div class="kpi-sub">p50 / p95 [LIVE GEMINI API]</div>
+          <div class="kpi-sub" id="kpi-gemini-sub">p50 / p95 [LIVE GEMINI API]</div>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 2: LIVE RECOVERY CONSOLE -->
-    <section class="card">
+    <!-- SECTION B: CURRENT LIVE TRANSACTION & RECOVERY CONSOLE -->
+    <section class="card card-live">
       <div class="section-title">
-        <span>⚡ View 2 — Live Recovery Console</span>
-        <span class="badge badge-green" id="recovery-status-badge">LIVE TEST MODE: READY</span>
+        <span>⚡ Area B — Current Live Transaction & Recovery Console</span>
+        <span class="badge badge-green" id="recovery-status-badge">PROVENANCE: LIVE TEST MODE</span>
       </div>
 
       <!-- Action Buttons -->
@@ -345,65 +352,75 @@
         <span class="badge badge-green" id="banner-badge">PAID</span>
       </div>
 
-      <!-- 10-Step Pipeline Visualizer -->
+      <!-- 10-Step Full Financial Pipeline Visualizer -->
       <div class="pipeline-grid">
         <div class="pipeline-step" id="pipe-1">
           <div class="step-num">Step 1</div>
-          <div class="step-title">User Intent</div>
-          <div class="step-desc" id="pipe-desc-1">Adidas size 10, max ₹5,500, +10% tol</div>
+          <div class="step-title">1. Checkout Started</div>
+          <div class="step-desc" id="pipe-desc-1">Initial session created</div>
         </div>
         <div class="pipeline-step" id="pipe-2">
           <div class="step-num">Step 2</div>
-          <div class="step-title">Original Selection</div>
-          <div class="step-desc" id="pipe-desc-2">ADIDAS-RUN-01 (₹4,900)</div>
+          <div class="step-title">2. Failure Detected</div>
+          <div class="step-desc" id="pipe-desc-2" style="color: var(--danger);">OUT_OF_STOCK (ADIDAS-RUN-01)</div>
         </div>
         <div class="pipeline-step" id="pipe-3">
           <div class="step-num">Step 3</div>
-          <div class="step-title">Failure Detected</div>
-          <div class="step-desc" id="pipe-desc-3" style="color: var(--danger);">OUT_OF_STOCK Event</div>
+          <div class="step-title">3. Candidate Selected</div>
+          <div class="step-desc" id="pipe-desc-3">Gemini recommends ADIDAS-RUN-02</div>
         </div>
         <div class="pipeline-step" id="pipe-4">
           <div class="step-num">Step 4</div>
-          <div class="step-title">AI Semantic Eval</div>
-          <div class="step-desc" id="pipe-desc-4">Gemini selects ADIDAS-RUN-02 [LIVE]</div>
+          <div class="step-title">4. Policy Gate 1</div>
+          <div class="step-desc" id="pipe-desc-4">User ∩ Merchant: PASS</div>
         </div>
         <div class="pipeline-step" id="pipe-5">
           <div class="step-num">Step 5</div>
-          <div class="step-title">Policy Gate 1</div>
-          <div class="step-desc" id="pipe-desc-5">User ∩ Merchant: PASS [DETERMINISTIC]</div>
+          <div class="step-title">5. Revalidation Gate 2</div>
+          <div class="step-desc" id="pipe-desc-5">Stock & Price verified: PASS</div>
         </div>
         <div class="pipeline-step" id="pipe-6">
           <div class="step-num">Step 6</div>
-          <div class="step-title">Live Revalidation</div>
-          <div class="step-desc" id="pipe-desc-6">Stock: 4 avail, Price: ₹5,200</div>
+          <div class="step-title">6. New Order Created</div>
+          <div class="step-desc" id="pipe-desc-6">Razorpay Order: order_TW2gAizOpB5o32</div>
         </div>
         <div class="pipeline-step" id="pipe-7">
           <div class="step-num">Step 7</div>
-          <div class="step-title">Razorpay Order</div>
-          <div class="step-desc" id="pipe-desc-7">New Order: order_TW2gAizOpB5o32 [LIVE]</div>
+          <div class="step-title">7. Checkout Signature</div>
+          <div class="step-desc" id="pipe-desc-7">Standard Checkout verified</div>
         </div>
         <div class="pipeline-step" id="pipe-8">
           <div class="step-num">Step 8</div>
-          <div class="step-title">Webhook Verified</div>
-          <div class="step-desc" id="pipe-desc-8">payment.captured HMAC PASS [LIVE]</div>
+          <div class="step-title">8. Webhook HMAC</div>
+          <div class="step-desc" id="pipe-desc-8">Raw Body HMAC verified</div>
+        </div>
+        <div class="pipeline-step" id="pipe-9">
+          <div class="step-num">Step 9</div>
+          <div class="step-title">9. Payment Captured</div>
+          <div class="step-desc" id="pipe-desc-9">payment.captured received</div>
+        </div>
+        <div class="pipeline-step" id="pipe-10">
+          <div class="step-num">Step 10</div>
+          <div class="step-title">10. State Transition</div>
+          <div class="step-desc" id="pipe-desc-10" style="color: var(--success); font-weight: 700;">Final State: PAID</div>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 3: RECOVERY DETAILS & CHRONOLOGICAL AUDIT TIMELINE -->
+    <!-- SECTION C: RECOVERY DETAILS & CHRONOLOGICAL AUDIT TIMELINE -->
     <section class="card">
       <div class="section-title">
-        <span>🔍 View 3 — Recovery Details & Audit Ledger</span>
+        <span>🔍 Area C — Recovery Details & Financial Audit Timeline</span>
         <span class="badge badge-purple" id="details-provenance">PROVENANCE: DEMO_FIXTURE</span>
       </div>
 
       <div class="details-grid">
-        <!-- Left: Fact Ledger -->
+        <!-- Left: Decision Facts -->
         <div>
-          <h3 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: #93c5fd;">Authoritative Decision Ledger</h3>
+          <h3 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: #93c5fd;">Authoritative Transaction Ledger</h3>
           <div class="prop-row">
             <span class="prop-key">Transaction ID</span>
-            <span class="prop-val" id="dt-txn-id">txn_demo_golden_recovery_001</span>
+            <span class="prop-val" id="dt-txn-id">txn_demo_fixture_001</span>
           </div>
           <div class="prop-row">
             <span class="prop-key">Original Product</span>
@@ -430,22 +447,34 @@
             <span class="prop-val" style="color: var(--success);" id="dt-policy">PASS (User ∩ Merchant)</span>
           </div>
           <div class="prop-row">
+            <span class="prop-key">Live Revalidation Gate 2</span>
+            <span class="prop-val" style="color: var(--success);" id="dt-reval">PASS (Stock 4, Price ₹5,200)</span>
+          </div>
+          <div class="prop-row">
             <span class="prop-key">Active Merchant Policy</span>
             <span class="prop-val" id="dt-policy-ver">pol_default_merchant_v1 (v1)</span>
           </div>
           <div class="prop-row">
             <span class="prop-key">New Razorpay Order ID</span>
-            <span class="prop-val" id="dt-order-id">order_TW2gAizOpB5o32 [LIVE TEST MODE]</span>
+            <span class="prop-val" id="dt-order-id">order_demo_fixture_rec_001</span>
           </div>
           <div class="prop-row">
-            <span class="prop-key">Payment ID / Final State</span>
-            <span class="prop-val" style="color: var(--success);" id="dt-payment-id">pay_demo_captured_001 (PAID)</span>
+            <span class="prop-key">Payment ID</span>
+            <span class="prop-val" style="color: var(--success);" id="dt-payment-id">pay_demo_fixture_captured_001</span>
+          </div>
+          <div class="prop-row">
+            <span class="prop-key">Webhook Event ID</span>
+            <span class="prop-val" id="dt-webhook-id">evt_demo_fixture_001</span>
+          </div>
+          <div class="prop-row">
+            <span class="prop-key">Final Authorization State</span>
+            <span class="prop-val" style="color: var(--success); font-weight: 800;" id="dt-final-state">PAID</span>
           </div>
         </div>
 
-        <!-- Right: Audit Event Stream -->
+        <!-- Right: Chronological Financial Audit Stream -->
         <div>
-          <h3 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: #c084fc;">Chronological Audit Event Stream</h3>
+          <h3 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: #c084fc;">Chronological Financial Audit Stream</h3>
           <div class="timeline" id="timeline-container">
             <!-- Events injected dynamically -->
           </div>
@@ -455,11 +484,23 @@
   </div>
 
   <script>
+    let runtimeModel = 'gemini-2.0-flash';
+
     // ─────────────────────────────────────────────
-    // Fetch and Populate Metrics (View 1)
+    // Fetch and Populate Metrics (View 1 & Header)
     // ─────────────────────────────────────────────
-    async function loadMetrics() {
+    async function loadStatusAndMetrics() {
       try {
+        // 1. Fetch Status for exact runtime model
+        const statusRes = await fetch('/api/status');
+        const statusData = await statusRes.json();
+        if (statusData.model) {
+          runtimeModel = statusData.model;
+          document.getElementById('header-model-badge').innerText = `MODEL: ${runtimeModel}`;
+          document.getElementById('kpi-gemini-sub').innerText = `p50 / p95 [LIVE GEMINI API (${runtimeModel})]`;
+        }
+
+        // 2. Fetch Metrics
         const res = await fetch('/api/metrics');
         const data = await res.json();
 
@@ -467,13 +508,13 @@
           document.getElementById('kpi-gmv').innerText = `₹${(data.recovered_gmv_inr || 0).toLocaleString()}`;
         }
         if (data.gmv_recovery_rate) {
-          document.getElementById('kpi-gmv-rate').innerText = `GMV Recovery Rate: ${(data.gmv_recovery_rate || 0).toFixed(1)}% [${data.provenance || 'SYNTHETIC'}]`;
+          document.getElementById('kpi-gmv-rate').innerText = `GMV Recovery Rate: ${(data.gmv_recovery_rate || 0).toFixed(2)}% [SYNTHETIC]`;
         }
         if (data.recovery_rate) {
-          document.getElementById('kpi-recovery-rate').innerText = `${(data.recovery_rate || 0).toFixed(1)}%`;
+          document.getElementById('kpi-recovery-rate').innerText = `${(data.recovery_rate || 0).toFixed(2)}%`;
         }
         if (data.recovered_transactions !== undefined && data.eligible_failures !== undefined) {
-          document.getElementById('kpi-recovered-count').innerText = `${data.recovered_transactions || 0} / ${data.eligible_failures || 0} Recovered [${data.provenance || 'SYNTHETIC'}]`;
+          document.getElementById('kpi-recovered-count').innerText = `${data.recovered_transactions || 0} / ${data.eligible_failures || 0} eligible failures [SYNTHETIC]`;
         }
         if (data.margin_metrics?.total_recovered_margin_inr) {
           document.getElementById('kpi-margin').innerText = `₹${(data.margin_metrics.total_recovered_margin_inr).toLocaleString()}`;
@@ -489,23 +530,21 @@
         if (gem) {
           document.getElementById('kpi-gemini-latency').innerText = `${gem.p50_ms.toLocaleString()}ms / ${gem.p95_ms.toLocaleString()}ms`;
         }
-
-        document.getElementById('metrics-provenance-badge').innerText = data.provenance === 'LIVE' ? 'LIVE TEST MODE' : 'SYNTHETIC BENCHMARK';
       } catch (err) {
         console.error('Failed to load metrics:', err);
       }
     }
 
     // ─────────────────────────────────────────────
-    // Load Demo Fixture (View 2 & 3)
+    // Load Demo Fixture (Area B & C)
     // ─────────────────────────────────────────────
     async function loadDemoFixture() {
       try {
         const res = await fetch('/api/recovery/demo-fixture');
         const fixture = await res.json();
-        renderRecoveryDetails(fixture);
-        renderDemoTimeline();
-        resetPipelineToSuccess();
+        renderRecoveryDetails(fixture, 'DEMO_FIXTURE');
+        renderFullFinancialTimeline();
+        resetPipelineToSuccess(fixture);
       } catch (err) {
         console.error('Failed to load fixture:', err);
       }
@@ -517,7 +556,7 @@
     async function runGoldenRecovery() {
       const btn = document.getElementById('btn-run-golden');
       btn.disabled = true;
-      btn.innerText = '⏳ Running Recovery Relay...';
+      btn.innerText = '⏳ Running Live Recovery Relay...';
 
       try {
         const res = await fetch('/api/recovery/evaluate', {
@@ -537,16 +576,16 @@
         if (result.success && result.recovered_transaction_id) {
           const detailRes = await fetch(`/api/recovery/${result.recovered_transaction_id}`);
           const detail = await detailRes.json();
-          renderRecoveryDetails(detail);
+          renderRecoveryDetails(detail, 'LIVE');
 
           const eventRes = await fetch(`/api/recovery/${result.recovered_transaction_id}/events`);
           const eventData = await eventRes.json();
           renderTimeline(eventData.events);
-          resetPipelineToSuccess();
+          resetPipelineToSuccess(detail);
         } else {
           loadDemoFixture();
         }
-        await loadMetrics();
+        await loadStatusAndMetrics();
       } catch (err) {
         btn.disabled = false;
         btn.innerText = '🚀 Run Live Golden Recovery';
@@ -584,20 +623,26 @@
         btn.disabled = false;
         btn.innerText = '🛡️ Test Safe Escalation (Constraint Breach)';
 
-        // Update pipeline to show safe escalation
+        // Update 10-step pipeline for escalation
         document.getElementById('pipe-1').className = 'pipeline-step active-pass';
-        document.getElementById('pipe-2').className = 'pipeline-step active-pass';
-        document.getElementById('pipe-3').className = 'pipeline-step active-fail';
-        document.getElementById('pipe-4').className = 'pipeline-step active-pass';
-        document.getElementById('pipe-5').className = 'pipeline-step active-block';
-        document.getElementById('pipe-desc-5').innerText = 'POLICY BLOCKED (Delta +6.12% > 1%)';
-        document.getElementById('pipe-desc-5').style.color = 'var(--warning)';
+        document.getElementById('pipe-2').className = 'pipeline-step active-fail';
+        document.getElementById('pipe-3').className = 'pipeline-step active-pass';
+        document.getElementById('pipe-4').className = 'pipeline-step active-block';
+        document.getElementById('pipe-desc-4').innerText = 'POLICY BLOCKED (Delta +6.12% > 1%)';
+        document.getElementById('pipe-desc-4').style.color = 'var(--warning)';
+        document.getElementById('pipe-5').className = 'pipeline-step';
+        document.getElementById('pipe-desc-5').innerText = 'HALTED';
         document.getElementById('pipe-6').className = 'pipeline-step';
-        document.getElementById('pipe-desc-6').innerText = 'HALTED (Zero Orders)';
+        document.getElementById('pipe-desc-6').innerText = 'NO ORDER CREATED';
         document.getElementById('pipe-7').className = 'pipeline-step';
-        document.getElementById('pipe-desc-7').innerText = 'NO RAZORPAY ORDER';
+        document.getElementById('pipe-desc-7').innerText = 'N/A';
         document.getElementById('pipe-8').className = 'pipeline-step';
-        document.getElementById('pipe-desc-8').innerText = 'ESCALATION REQUIRED';
+        document.getElementById('pipe-desc-8').innerText = 'N/A';
+        document.getElementById('pipe-9').className = 'pipeline-step';
+        document.getElementById('pipe-desc-9').innerText = 'N/A';
+        document.getElementById('pipe-10').className = 'pipeline-step active-block';
+        document.getElementById('pipe-desc-10').innerText = 'ESCALATION REQUIRED';
+        document.getElementById('pipe-desc-10').style.color = 'var(--warning)';
 
         // Update Banner
         const banner = document.getElementById('status-banner');
@@ -605,7 +650,7 @@
         banner.className = 'banner banner-warning';
         document.getElementById('banner-text').innerText = '🛡️ Safe Escalation Triggered: Candidate exceeded budget tolerance (+6.12% vs 1%). Zero Razorpay orders created.';
         document.getElementById('banner-badge').className = 'badge badge-yellow';
-        document.getElementById('banner-badge').innerText = 'ESCALATED';
+        document.getElementById('banner-badge').innerText = 'ESCALATION_REQUIRED';
 
         // Update Decision Ledger
         document.getElementById('dt-txn-id').innerText = result.original_transaction_id || 'txn_escalation_001';
@@ -616,13 +661,16 @@
         document.getElementById('dt-ai-reason').innerText = result.semantic_decision?.reason || 'Recommended substitute exceeded hard policy constraints.';
         document.getElementById('dt-policy').innerText = 'FAIL (Price Delta Exceeded)';
         document.getElementById('dt-policy').style.color = 'var(--warning)';
+        document.getElementById('dt-reval').innerText = 'HALTED (Policy Blocked)';
         document.getElementById('dt-order-id').innerText = 'NONE (Order Creation Prevented)';
-        document.getElementById('dt-payment-id').innerText = 'NONE (ESCALATION_REQUIRED)';
-        document.getElementById('dt-payment-id').style.color = 'var(--warning)';
+        document.getElementById('dt-payment-id').innerText = 'NONE';
+        document.getElementById('dt-webhook-id').innerText = 'NONE';
+        document.getElementById('dt-final-state').innerText = 'POLICY_REJECTED (ESCALATION_REQUIRED)';
+        document.getElementById('dt-final-state').style.color = 'var(--warning)';
         document.getElementById('details-provenance').innerText = 'PROVENANCE: LIVE TEST MODE';
 
         renderEscalationTimeline();
-        await loadMetrics();
+        await loadStatusAndMetrics();
       } catch (err) {
         btn.disabled = false;
         btn.innerText = '🛡️ Test Safe Escalation (Constraint Breach)';
@@ -633,20 +681,24 @@
     // ─────────────────────────────────────────────
     // Render Helpers
     // ─────────────────────────────────────────────
-    function renderRecoveryDetails(detail) {
+    function renderRecoveryDetails(detail, mode) {
       document.getElementById('dt-txn-id').innerText = detail.transaction_id || 'txn_rec_001';
       document.getElementById('dt-orig-prod').innerText = detail.original_product ? `${detail.original_product.name} (₹${detail.original_product.price_inr})` : 'Adidas Boston 12 (₹4,900)';
       document.getElementById('dt-failure').innerText = detail.failure_type || 'OUT_OF_STOCK';
       document.getElementById('dt-rec-prod').innerText = detail.selected_substitute ? `${detail.selected_substitute.name} (₹${detail.selected_substitute.price_inr})` : 'Adidas Adizero SL2 (₹5,200)';
       document.getElementById('dt-delta').innerText = `+₹${detail.price_delta_inr || 300} (+${detail.price_delta_percent || 6.12}%)`;
-      document.getElementById('dt-ai-reason').innerText = detail.llm_recommendation_explanation || 'Optimal in-stock substitute matching user mandate.';
+      document.getElementById('dt-ai-reason').innerText = detail.llm_recommendation_explanation || `Selected by Gemini ${runtimeModel} within policy boundaries.`;
       document.getElementById('dt-policy').innerText = `${detail.policy_result || 'PASS'} (User ∩ Merchant)`;
       document.getElementById('dt-policy').style.color = 'var(--success)';
+      document.getElementById('dt-reval').innerText = `${detail.revalidation_result || 'PASS'} (Stock 4, Price ₹5,200)`;
+      document.getElementById('dt-reval').style.color = 'var(--success)';
       document.getElementById('dt-policy-ver').innerText = `${detail.policy_id || 'pol_default_merchant_v1'} (v${detail.policy_version || 1})`;
-      document.getElementById('dt-order-id').innerText = `${detail.new_razorpay_order_id || 'order_TW2gAizOpB5o32'} [LIVE TEST MODE]`;
-      document.getElementById('dt-payment-id').innerText = `${detail.payment_id || 'pay_demo_captured_001'} (${detail.final_state || 'PAID'})`;
-      document.getElementById('dt-payment-id').style.color = 'var(--success)';
-      document.getElementById('details-provenance').innerText = `PROVENANCE: ${detail.provenance || 'DEMO_FIXTURE'}`;
+      document.getElementById('dt-order-id').innerText = detail.new_razorpay_order_id || 'order_demo_fixture_rec_001';
+      document.getElementById('dt-payment-id').innerText = detail.payment_id || 'pay_demo_fixture_captured_001';
+      document.getElementById('dt-webhook-id').innerText = detail.webhook_event_id || 'evt_demo_fixture_001';
+      document.getElementById('dt-final-state').innerText = detail.final_state || 'PAID';
+      document.getElementById('dt-final-state').style.color = 'var(--success)';
+      document.getElementById('details-provenance').innerText = `PROVENANCE: ${mode === 'LIVE' ? 'LIVE TEST MODE' : 'DEMO_FIXTURE'}`;
 
       const banner = document.getElementById('status-banner');
       banner.style.display = 'flex';
@@ -656,21 +708,23 @@
       document.getElementById('banner-badge').innerText = 'PAID';
     }
 
-    function resetPipelineToSuccess() {
-      for (let i = 1; i <= 8; i++) {
+    function resetPipelineToSuccess(detail) {
+      for (let i = 1; i <= 10; i++) {
         const el = document.getElementById(`pipe-${i}`);
         if (el) el.className = 'pipeline-step active-pass';
       }
-      document.getElementById('pipe-desc-5').innerText = 'User ∩ Merchant: PASS [DETERMINISTIC]';
-      document.getElementById('pipe-desc-5').style.color = 'var(--text-muted)';
-      document.getElementById('pipe-desc-7').innerText = 'New Order: order_TW2gAizOpB5o32 [LIVE]';
-      document.getElementById('pipe-desc-8').innerText = 'payment.captured HMAC PASS [LIVE]';
+      document.getElementById('pipe-desc-4').innerText = 'User ∩ Merchant: PASS [DETERMINISTIC]';
+      document.getElementById('pipe-desc-6').innerText = `New Order: ${detail?.new_razorpay_order_id || 'order_demo_fixture_rec_001'}`;
+      document.getElementById('pipe-desc-8').innerText = 'Raw Body HMAC PASS';
+      document.getElementById('pipe-desc-9').innerText = 'payment.captured verified';
+      document.getElementById('pipe-desc-10').innerText = 'Final State: PAID';
+      document.getElementById('pipe-desc-10').style.color = 'var(--success)';
     }
 
     function renderTimeline(events) {
       const container = document.getElementById('timeline-container');
       container.innerHTML = '';
-      if (!events || events.length === 0) return renderDemoTimeline();
+      if (!events || events.length === 0) return renderFullFinancialTimeline();
 
       events.forEach((ev) => {
         const item = document.createElement('div');
@@ -687,56 +741,77 @@
       });
     }
 
-    function renderDemoTimeline() {
+    function renderFullFinancialTimeline() {
       const container = document.getElementById('timeline-container');
       container.innerHTML = `
         <div class="timeline-item success">
-          <div class="timeline-time">21:20:00</div>
+          <div class="timeline-time">22:50:01</div>
           <div class="timeline-content">
-            <div class="timeline-title">CHECKOUT_STARTED [SUCCESS]</div>
+            <div class="timeline-title">1. CHECKOUT_STARTED [SUCCESS]</div>
             <div class="timeline-detail">Initial transaction created for ADIDAS-RUN-01 (₹4,900)</div>
           </div>
         </div>
         <div class="timeline-item failure">
-          <div class="timeline-time">21:20:01</div>
+          <div class="timeline-time">22:50:02</div>
           <div class="timeline-content">
-            <div class="timeline-title">FAILURE_DETECTED [FAILURE]</div>
-            <div class="timeline-detail">Runtime inventory check: OUT_OF_STOCK</div>
+            <div class="timeline-title">2. FAILURE_DETECTED [FAILURE]</div>
+            <div class="timeline-detail">Runtime stock check: OUT_OF_STOCK</div>
           </div>
         </div>
         <div class="timeline-item success">
-          <div class="timeline-time">21:20:02</div>
+          <div class="timeline-time">22:50:03</div>
           <div class="timeline-content">
-            <div class="timeline-title">CANDIDATE_SELECTED [SUCCESS]</div>
-            <div class="timeline-detail">Gemini 2.0 Flash recommends ADIDAS-RUN-02 (+6.12% delta) [LIVE]</div>
+            <div class="timeline-title">3. CANDIDATE_SELECTED [SUCCESS]</div>
+            <div class="timeline-detail">Gemini ${runtimeModel} recommends ADIDAS-RUN-02 (+6.12% delta)</div>
           </div>
         </div>
         <div class="timeline-item success">
-          <div class="timeline-time">21:20:02</div>
+          <div class="timeline-time">22:50:03</div>
           <div class="timeline-content">
-            <div class="timeline-title">POLICY_PASSED [SUCCESS]</div>
-            <div class="timeline-detail">Mandate + Merchant constraints satisfied [DETERMINISTIC]</div>
+            <div class="timeline-title">4. POLICY_PASSED [SUCCESS]</div>
+            <div class="timeline-detail">Deterministic Gate 1: UserMandate ∩ MerchantPolicy satisfied</div>
           </div>
         </div>
         <div class="timeline-item success">
-          <div class="timeline-time">21:20:03</div>
+          <div class="timeline-time">22:50:04</div>
           <div class="timeline-content">
-            <div class="timeline-title">REVALIDATION_PASSED [SUCCESS]</div>
-            <div class="timeline-detail">Stock verified (4 avail), Authoritative price: ₹5,200</div>
+            <div class="timeline-title">5. REVALIDATION_PASSED [SUCCESS]</div>
+            <div class="timeline-detail">Live stock: 4 units, Authoritative catalog price: ₹5,200</div>
           </div>
         </div>
         <div class="timeline-item success">
-          <div class="timeline-time">21:20:04</div>
+          <div class="timeline-time">22:50:05</div>
           <div class="timeline-content">
-            <div class="timeline-title">RECOVERY_SUCCEEDED [SUCCESS]</div>
-            <div class="timeline-detail">New Razorpay Order order_TW2gAizOpB5o32 created [LIVE TEST MODE]</div>
+            <div class="timeline-title">6. NEW_ORDER_CREATED [SUCCESS]</div>
+            <div class="timeline-detail">Razorpay Order created: order_demo_fixture_rec_001</div>
           </div>
         </div>
         <div class="timeline-item success">
-          <div class="timeline-time">21:20:05</div>
+          <div class="timeline-time">22:50:06</div>
           <div class="timeline-content">
-            <div class="timeline-title">PAYMENT_CAPTURED [SUCCESS]</div>
-            <div class="timeline-detail">Authoritative webhook HMAC verified -> PAID [LIVE TEST MODE]</div>
+            <div class="timeline-title">7. CHECKOUT_SIGNATURE_VERIFIED [SUCCESS]</div>
+            <div class="timeline-detail">Razorpay Standard Checkout payment signature verified server-side</div>
+          </div>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-time">22:50:07</div>
+          <div class="timeline-content">
+            <div class="timeline-title">8. WEBHOOK_SIGNATURE_VERIFIED [SUCCESS]</div>
+            <div class="timeline-detail">Authoritative x-razorpay-signature verified against raw webhook bytes</div>
+          </div>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-time">22:50:08</div>
+          <div class="timeline-content">
+            <div class="timeline-title">9. PAYMENT_CAPTURED [SUCCESS]</div>
+            <div class="timeline-detail">Razorpay payment.captured event processed (Event ID recorded)</div>
+          </div>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-time">22:50:09</div>
+          <div class="timeline-content">
+            <div class="timeline-title">10. STATE_TRANSITION_PAID [SUCCESS]</div>
+            <div class="timeline-detail">Transaction transitioned to PAID only after webhook capture</div>
           </div>
         </div>
       `;
@@ -746,38 +821,38 @@
       const container = document.getElementById('timeline-container');
       container.innerHTML = `
         <div class="timeline-item success">
-          <div class="timeline-time">21:30:00</div>
+          <div class="timeline-time">22:55:01</div>
           <div class="timeline-content">
-            <div class="timeline-title">CHECKOUT_STARTED [SUCCESS]</div>
+            <div class="timeline-title">1. CHECKOUT_STARTED [SUCCESS]</div>
             <div class="timeline-detail">Initial checkout for ADIDAS-RUN-01</div>
           </div>
         </div>
         <div class="timeline-item failure">
-          <div class="timeline-time">21:30:01</div>
+          <div class="timeline-time">22:55:02</div>
           <div class="timeline-content">
-            <div class="timeline-title">FAILURE_DETECTED [FAILURE]</div>
+            <div class="timeline-title">2. FAILURE_DETECTED [FAILURE]</div>
             <div class="timeline-detail">Runtime stockout detected</div>
           </div>
         </div>
         <div class="timeline-item success">
-          <div class="timeline-time">21:30:02</div>
+          <div class="timeline-time">22:55:03</div>
           <div class="timeline-content">
-            <div class="timeline-title">CANDIDATE_SELECTED [SUCCESS]</div>
-            <div class="timeline-detail">AI evaluates ADIDAS-RUN-02 (+6.12% delta) [LIVE]</div>
+            <div class="timeline-title">3. CANDIDATE_SELECTED [SUCCESS]</div>
+            <div class="timeline-detail">AI evaluates ADIDAS-RUN-02 (+6.12% delta)</div>
           </div>
         </div>
         <div class="timeline-item failure">
-          <div class="timeline-time">21:30:02</div>
+          <div class="timeline-time">22:55:03</div>
           <div class="timeline-content">
-            <div class="timeline-title">POLICY_REJECTED [FAILURE]</div>
+            <div class="timeline-title">4. POLICY_REJECTED [FAILURE]</div>
             <div class="timeline-detail">Price delta +6.12% exceeds user mandate limit +1.00% [DETERMINISTIC]</div>
           </div>
         </div>
         <div class="timeline-item failure">
-          <div class="timeline-time">21:30:03</div>
+          <div class="timeline-time">22:55:04</div>
           <div class="timeline-content">
-            <div class="timeline-title">RECOVERY_FAILED [ESCALATION_REQUIRED]</div>
-            <div class="timeline-detail">Zero Razorpay orders created. Escalated to user.</div>
+            <div class="timeline-title">5. RECOVERY_FAILED [ESCALATION_REQUIRED]</div>
+            <div class="timeline-detail">Zero Razorpay orders created. Escalated safely to user.</div>
           </div>
         </div>
       `;
@@ -785,7 +860,7 @@
 
     // Initialize on load
     window.addEventListener('DOMContentLoaded', () => {
-      loadMetrics();
+      loadStatusAndMetrics();
       loadDemoFixture();
     });
   </script>

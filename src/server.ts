@@ -49,6 +49,8 @@ app.get('/api/status', (_req: Request, res: Response) => {
   res.json({
     service: 'resilient-agent-relay',
     phase: 'gate-a',
+    model: config.geminiModel,
+    llm_provider: config.llmProvider,
     credentials_configured: config.hasCredentials,
     key_id_present: Boolean(config.razorpayKeyId),
     key_secret_present: Boolean(config.razorpayKeySecret),

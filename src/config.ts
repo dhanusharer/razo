@@ -20,7 +20,7 @@ export const config: AppConfig = {
   razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET || '',
   razorpayWebhookSecret: process.env.RAZORPAY_WEBHOOK_SECRET || '',
   llmProvider: process.env.LLM_PROVIDER || 'gemini',
-  geminiModel: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
   recoveryTimeoutMs: parseInt(process.env.RECOVERY_TIMEOUT_MS || '8000', 10),
   get hasCredentials(): boolean {
     return Boolean(

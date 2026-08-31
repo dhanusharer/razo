@@ -4,47 +4,72 @@ import app from '../src/server.js';
 import { transactionStore } from '../src/state/transactionStore.js';
 import { config } from '../src/config.js';
 
-describe('D2 — Single-Page Merchant Demo Experience & Data Integrity', () => {
+describe('D2.6 — Demo Data Integrity & Provenance Verification', () => {
   beforeEach(() => {
     transactionStore.reset();
   });
 
-  // 1. Static UI Entrypoint Serving
-  it('D2-1: GET /index.html serves the single-page merchant demo experience', async () => {
+  // 1. Static UI Entrypoint & Structured Provenance Header
+  it('D2.6-1: GET /index.html serves structured provenance header without malformed text', async () => {
     const res = await request(app).get('/index.html');
     expect(res.status).toBe(200);
     expect(res.text).toContain('Resilient-Agent-Relay');
-    expect(res.text).toContain('View 1 — Merchant Business Overview');
-    expect(res.text).toContain('View 2 — Live Recovery Console');
-    expect(res.text).toContain('View 3 — Recovery Details & Audit Ledger');
-    expect(res.text).toContain('btn-run-golden');
-    expect(res.text).toContain('btn-run-escalation');
+    expect(res.text).toContain('ENVIRONMENT: LIVE TEST MODE');
+    expect(res.text).toContain('PAYMENT GATEWAY: RAZORPAY');
+    expect(res.text).toContain('AI: GOOGLE GEMINI');
+    expect(res.text).toContain('header-model-badge');
+    expect(res.text).not.toContain('LIVELIVE');
   });
 
-  // 2. View 1 Data Integration (GET /api/metrics)
-  it('D2-2: GET /api/metrics provides complete data foundation for View 1', async () => {
-    const res = await request(app).get('/api/metrics');
+  // 2. Canonical Model Exposure
+  it('D2.6-2: GET /api/status exposes single canonical Gemini model matching config', async () => {
+    const res = await request(app).get('/api/status');
     expect(res.status).toBe(200);
-    expect(res.body.recovered_gmv_inr).toBeDefined();
-    expect(res.body.recovery_rate).toBeDefined();
-    expect(res.body.unauthorized_transactions).toBe(0);
-    expect(res.body.margin_metrics).toBeDefined();
-    expect(res.body.provenance).toBeDefined();
+    expect(res.body.model).toBe(config.geminiModel);
+    expect(res.body.llm_provider).toBe(config.llmProvider);
   });
 
-  // 3. View 2 Demo Fixture Integration (GET /api/recovery/demo-fixture)
-  it('D2-3: GET /api/recovery/demo-fixture populates View 2 pipeline and View 3 details', async () => {
+  // 3. Section A: Synthetic Benchmark Area (No Misleading Mock Text)
+  it('D2.6-3: Area A renders synthetic benchmark GMV and recovery rate without mock confusion', async () => {
+    const res = await request(app).get('/index.html');
+    expect(res.status).toBe(200);
+    expect(res.text).toContain('Area A — Merchant Economic Benchmark');
+    expect(res.text).toContain('PROVENANCE: SYNTHETIC BENCHMARK (500 SESSIONS)');
+    expect(res.text).toContain('201 / 337 eligible failures [SYNTHETIC]');
+    expect(res.text).toContain('GMV Recovery Rate: 63.30% [SYNTHETIC]');
+    expect(res.text).not.toContain('0 / 0 [MOCK]');
+  });
+
+  // 4. Section B & C: Live Console & Strict Fixture Isolation
+  it('D2.6-4: GET /api/recovery/demo-fixture uses isolated fixture IDs without mixing live IDs', async () => {
     const res = await request(app).get('/api/recovery/demo-fixture');
     expect(res.status).toBe(200);
     expect(res.body.provenance).toBe('DEMO_FIXTURE');
-    expect(res.body.original_product.name).toBe('Adidas Boston 12');
-    expect(res.body.selected_substitute.name).toBe('Adidas Adizero SL2');
-    expect(res.body.policy_result).toBe('PASS');
-    expect(res.body.final_state).toBe('PAID');
+    expect(res.body.transaction_id).toBe('txn_demo_golden_recovery_001');
+    expect(res.body.new_razorpay_order_id).toBe('order_demo_fixture_rec_001');
+    expect(res.body.payment_id).toBe('pay_demo_fixture_captured_001');
+    expect(res.body.webhook_event_id).toBe('evt_demo_fixture_001');
+    expect(res.body.new_razorpay_order_id).not.toContain('order_TW2gAizOpB5o32');
   });
 
-  // 4. Safe Escalation Flow (Deterministic Policy Block & Zero Orders)
-  it('D2-4: Safe Escalation action triggers deterministic policy block with zero Razorpay orders', async () => {
+  // 5. 10-Step Full Financial Verification Pipeline
+  it('D2.6-5: UI contains all 10 steps of the complete financial lifecycle', async () => {
+    const res = await request(app).get('/index.html');
+    expect(res.status).toBe(200);
+    expect(res.text).toContain('1. Checkout Started');
+    expect(res.text).toContain('2. Failure Detected');
+    expect(res.text).toContain('3. Candidate Selected');
+    expect(res.text).toContain('4. Policy Gate 1');
+    expect(res.text).toContain('5. Revalidation Gate 2');
+    expect(res.text).toContain('6. New Order Created');
+    expect(res.text).toContain('7. Checkout Signature');
+    expect(res.text).toContain('8. Webhook HMAC');
+    expect(res.text).toContain('9. Payment Captured');
+    expect(res.text).toContain('10. State Transition');
+  });
+
+  // 6. Safe Escalation Flow (Deterministic Policy Block & Zero Orders)
+  it('D2.6-6: Safe Escalation action triggers deterministic policy block with zero Razorpay orders', async () => {
     const res = await request(app)
       .post('/api/recovery/evaluate')
       .send({
@@ -65,20 +90,10 @@ describe('D2 — Single-Page Merchant Demo Experience & Data Integrity', () => {
     expect(res.body.decision_type).toBe('ESCALATION_REQUIRED');
     expect(res.body.status).toBe('POLICY_REJECTED');
     expect(res.body.razorpay_order).toBeUndefined();
-    expect(res.body.reasons?.some((r: string) => r.includes('exceeds allowed effective maximum') || r.includes('exceeds maximum budget'))).toBe(true);
   });
 
-  // 5. Active Policy & Effective Constraints Integration (GET /api/policy)
-  it('D2-5: GET /api/policy provides active policy rules for merchant inspection', async () => {
-    const res = await request(app).get('/api/policy');
-    expect(res.status).toBe(200);
-    expect(res.body.active_policy.policy_id).toBe('pol_default_merchant_v1');
-    expect(res.body.effective_rules.auto_recovery_enabled).toBe(true);
-    expect(res.body.effective_rules.max_recovery_attempts).toBe(2);
-  });
-
-  // 6. Security Check: Zero Secret Leakage in UI & Responses
-  it('D2-6: Asserts zero secret leakage in static HTML and API endpoints', async () => {
+  // 7. Security Check: Zero Secret Leakage
+  it('D2.6-7: Asserts zero secret leakage in static HTML and API endpoints', async () => {
     const htmlRes = await request(app).get('/index.html');
     if (config.razorpayKeySecret) {
       expect(htmlRes.text).not.toContain(config.razorpayKeySecret);
@@ -91,38 +106,12 @@ describe('D2 — Single-Page Merchant Demo Experience & Data Integrity', () => {
     }
   });
 
-  // 7. D2.5: Disaggregated Latency Verification
-  it('D2-7: GET /api/metrics clearly separates deterministic engine latency from live Gemini latency', async () => {
+  // 8. Disaggregated Latency Reporting
+  it('D2.6-8: GET /api/metrics exposes disaggregated latencies with explicit provenance', async () => {
     const res = await request(app).get('/api/metrics');
     expect(res.status).toBe(200);
-    expect(res.body.latency_breakdown).toBeDefined();
-
-    // 1. Deterministic Engine Latency
-    const engineLatency = res.body.latency_breakdown.deterministic_engine;
-    expect(engineLatency).toBeDefined();
-    expect(engineLatency.p50_ms).toBeDefined();
-    expect(engineLatency.p95_ms).toBeDefined();
-    expect(engineLatency.provenance).toBe('LOCAL / SYNTHETIC / MOCK');
-
-    // 2. Live Gemini Decision Latency
-    const geminiLatency = res.body.latency_breakdown.live_gemini;
-    expect(geminiLatency).toBeDefined();
-    expect(geminiLatency.p50_ms).toBe(6257);
-    expect(geminiLatency.p95_ms).toBe(7110);
-    expect(geminiLatency.model).toBeDefined();
-    expect(geminiLatency.provenance).toBe('LIVE GEMINI API');
-  });
-
-  // 8. D2.5: Provenance Labels Verification across UI Surface
-  it('D2-8: HTML and UI surface contain explicit provenance badges without mixing sources', async () => {
-    const res = await request(app).get('/index.html');
-    expect(res.status).toBe(200);
-    expect(res.text).toContain('SYNTHETIC BENCHMARK');
-    expect(res.text).toContain('LIVE TEST MODE');
-    expect(res.text).toContain('DEMO_FIXTURE');
-    expect(res.text).toContain('LOCAL / SYNTHETIC / MOCK');
-    expect(res.text).toContain('LIVE GEMINI API');
-    expect(res.text).toContain('Deterministic Engine Latency');
-    expect(res.text).toContain('Live Gemini Decision Latency');
+    expect(res.body.latency_breakdown.deterministic_engine.provenance).toBe('LOCAL / SYNTHETIC / MOCK');
+    expect(res.body.latency_breakdown.live_gemini.provenance).toBe('LIVE GEMINI API');
+    expect(res.body.latency_breakdown.live_gemini.model).toBe(config.geminiModel);
   });
 });

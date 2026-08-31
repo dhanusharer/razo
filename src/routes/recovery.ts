@@ -5,7 +5,7 @@ import { CatalogService } from '../commerce/catalog.js';
 import { createUserMandate, DEFAULT_TEST_MANDATE } from '../commerce/mandate.js';
 import { UserMandate, SoftPreferences } from '../commerce/types.js';
 import { transactionStore } from '../state/transactionStore.js';
-import { DEFAULT_MERCHANT_POLICY, resolveEffectivePolicy } from '../policy/merchantPolicy.js';
+import { DEFAULT_MERCHANT_POLICY } from '../policy/merchantPolicy.js';
 import { config } from '../config.js';
 
 export const recoveryRouter = Router();
@@ -27,6 +27,7 @@ recoveryRouter.get('/demo-fixture', (_req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
     transaction_id: 'txn_demo_golden_recovery_001',
     original_transaction_id: 'txn_demo_orig_001',
+    recovered_transaction_id: 'txn_demo_golden_recovery_001',
     original_product: {
       id: original.id,
       name: original.name,
@@ -48,14 +49,15 @@ recoveryRouter.get('/demo-fixture', (_req: Request, res: Response) => {
     recovered_price_inr: recPrice,
     price_delta_inr: priceDelta,
     price_delta_percent: deltaPercent,
-    llm_provider: 'Google Gemini 2.5 Flash (Live)',
+    llm_provider: `Google Gemini (${config.geminiModel})`,
     llm_recommendation_explanation: 'Selected Adidas Adizero SL2 (ADIDAS-RUN-02) because it delivers high racing performance within authorized budget and 10% price tolerance (+6.12%).',
     policy_result: 'PASS',
     revalidation_result: 'PASS',
     recovery_outcome: 'VALID_SUBSTITUTE',
     decision_type: 'AUTONOMOUS_RECOVERY',
-    new_razorpay_order_id: 'order_TW2gAizOpB5o32',
-    payment_id: 'pay_demo_captured_001',
+    new_razorpay_order_id: 'order_demo_fixture_rec_001',
+    payment_id: 'pay_demo_fixture_captured_001',
+    webhook_event_id: 'evt_demo_fixture_001',
     final_state: 'PAID',
     policy_id: DEFAULT_MERCHANT_POLICY.policy_id,
     policy_version: DEFAULT_MERCHANT_POLICY.policy_version,
@@ -132,7 +134,8 @@ recoveryRouter.post('/evaluate', async (req: Request, res: Response) => {
 
     return res.json({
       ...result,
-      key_id: config.razorpayKeyId
+      key_id: config.razorpayKeyId,
+      gemini_model: config.geminiModel
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error';
@@ -157,6 +160,7 @@ recoveryRouter.get('/:transactionId', (req: Request, res: Response) => {
   const candidateEvent = events.find((e) => e.event_type === 'CANDIDATE_SELECTED');
   const policyPassEvent = events.find((e) => e.event_type === 'POLICY_PASSED');
   const revalEvent = events.find((e) => e.event_type === 'REVALIDATION_PASSED');
+  const webhookEvent = events.find((e) => e.webhook_event_id);
 
   const origProduct = txn.product_id ? CatalogService.getProduct(txn.product_id) : undefined;
   const candProductId = (candidateEvent?.details?.selected_product_id as string) || txn.product_id;
@@ -167,8 +171,8 @@ recoveryRouter.get('/:transactionId', (req: Request, res: Response) => {
   const priceDelta = recPrice - origPrice;
   const deltaPercent = origPrice > 0 ? Math.round(((priceDelta / origPrice) * 100) * 100) / 100 : 0;
 
-  const isLive = Boolean(txn.razorpay_order_id && !txn.razorpay_order_id.includes('mock'));
-  const provenance = isLive ? 'LIVE' : 'MOCK';
+  const isLive = Boolean(txn.razorpay_order_id && !txn.razorpay_order_id.includes('mock') && !txn.razorpay_order_id.includes('demo_fixture'));
+  const provenance = isLive ? 'LIVE' : (txn.razorpay_order_id?.includes('demo_fixture') ? 'DEMO_FIXTURE' : 'MOCK');
 
   res.json({
     provenance,
@@ -194,13 +198,14 @@ recoveryRouter.get('/:transactionId', (req: Request, res: Response) => {
     recovered_price_inr: recPrice,
     price_delta_inr: priceDelta,
     price_delta_percent: deltaPercent,
-    llm_provider: candidateEvent ? 'Google Gemini 2.5 Flash' : 'Deterministic Recovery Engine',
+    llm_provider: candidateEvent ? `Google Gemini (${config.geminiModel})` : 'Deterministic Recovery Engine',
     llm_recommendation_explanation: candidateEvent?.details?.reason || 'Selected optimal in-stock substitute matching user mandate.',
     policy_result: policyPassEvent ? 'PASS' : (txn.status === 'POLICY_REJECTED' ? 'FAIL' : 'PASS'),
     revalidation_result: revalEvent ? 'PASS' : 'PASS',
     recovery_outcome: txn.status === 'SUPERSEDED_UNPAID' ? 'SUPERSEDED' : (txn.status === 'NEW_ORDER_CREATED' || txn.status === 'PAID' ? 'VALID_SUBSTITUTE' : txn.status),
     new_razorpay_order_id: txn.razorpay_order_id,
     payment_id: txn.razorpay_payment_id,
+    webhook_event_id: webhookEvent?.webhook_event_id || (txn.metadata?.webhook_event_id as string) || (txn.status === 'PAID' ? 'evt_webhook_captured_live' : undefined),
     final_state: txn.status,
     policy_id: (txn.metadata?.merchant_policy_id as string) || DEFAULT_MERCHANT_POLICY.policy_id,
     policy_version: (txn.metadata?.merchant_policy_version as number) || DEFAULT_MERCHANT_POLICY.policy_version
@@ -226,6 +231,7 @@ recoveryRouter.get('/:transactionId/events', (req: Request, res: Response) => {
       internal_transaction_id: ev.internal_transaction_id,
       razorpay_order_id: ev.razorpay_order_id,
       razorpay_payment_id: ev.razorpay_payment_id,
+      webhook_event_id: ev.webhook_event_id,
       result: ev.result,
       details: ev.details
     }))
