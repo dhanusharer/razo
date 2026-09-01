@@ -4,13 +4,13 @@ import app from '../src/server.js';
 import { transactionStore } from '../src/state/transactionStore.js';
 import { config } from '../src/config.js';
 
-describe('D2.6 — Demo Data Integrity & Provenance Verification', () => {
+describe('D2.7 — State & Provenance Consistency Audit', () => {
   beforeEach(() => {
     transactionStore.reset();
   });
 
   // 1. Static UI Entrypoint & Structured Provenance Header
-  it('D2.6-1: GET /index.html serves structured provenance header without malformed text', async () => {
+  it('D2.7-1: GET /index.html serves structured provenance header without malformed text', async () => {
     const res = await request(app).get('/index.html');
     expect(res.status).toBe(200);
     expect(res.text).toContain('Resilient-Agent-Relay');
@@ -22,26 +22,26 @@ describe('D2.6 — Demo Data Integrity & Provenance Verification', () => {
   });
 
   // 2. Canonical Model Exposure
-  it('D2.6-2: GET /api/status exposes single canonical Gemini model matching config', async () => {
+  it('D2.7-2: GET /api/status exposes single canonical Gemini model matching config', async () => {
     const res = await request(app).get('/api/status');
     expect(res.status).toBe(200);
     expect(res.body.model).toBe(config.geminiModel);
     expect(res.body.llm_provider).toBe(config.llmProvider);
   });
 
-  // 3. Section A: Synthetic Benchmark Area (No Misleading Mock Text)
-  it('D2.6-3: Area A renders synthetic benchmark GMV and recovery rate without mock confusion', async () => {
+  // 3. Section A: Synthetic Benchmark Area (Authoritative Backend Numbers)
+  it('D2.7-3: Area A renders synthetic benchmark GMV and recovery rate without mock confusion', async () => {
     const res = await request(app).get('/index.html');
     expect(res.status).toBe(200);
     expect(res.text).toContain('Area A — Merchant Economic Benchmark');
     expect(res.text).toContain('PROVENANCE: SYNTHETIC BENCHMARK (500 SESSIONS)');
-    expect(res.text).toContain('201 / 337 eligible failures [SYNTHETIC]');
-    expect(res.text).toContain('GMV Recovery Rate: 63.30% [SYNTHETIC]');
+    expect(res.text).toContain('201 / 337 eligible failures [SYNTHETIC BENCHMARK]');
+    expect(res.text).toContain('GMV Recovery Rate: 63.30% [SYNTHETIC BENCHMARK]');
     expect(res.text).not.toContain('0 / 0 [MOCK]');
   });
 
   // 4. Section B & C: Live Console & Strict Fixture Isolation
-  it('D2.6-4: GET /api/recovery/demo-fixture uses isolated fixture IDs without mixing live IDs', async () => {
+  it('D2.7-4: GET /api/recovery/demo-fixture uses isolated fixture IDs without mixing live IDs', async () => {
     const res = await request(app).get('/api/recovery/demo-fixture');
     expect(res.status).toBe(200);
     expect(res.body.provenance).toBe('DEMO_FIXTURE');
@@ -53,7 +53,7 @@ describe('D2.6 — Demo Data Integrity & Provenance Verification', () => {
   });
 
   // 5. 10-Step Full Financial Verification Pipeline
-  it('D2.6-5: UI contains all 10 steps of the complete financial lifecycle', async () => {
+  it('D2.7-5: UI contains all 10 steps of the complete financial lifecycle', async () => {
     const res = await request(app).get('/index.html');
     expect(res.status).toBe(200);
     expect(res.text).toContain('1. Checkout Started');
@@ -69,7 +69,7 @@ describe('D2.6 — Demo Data Integrity & Provenance Verification', () => {
   });
 
   // 6. Safe Escalation Flow (Deterministic Policy Block & Zero Orders)
-  it('D2.6-6: Safe Escalation action triggers deterministic policy block with zero Razorpay orders', async () => {
+  it('D2.7-6: Safe Escalation action triggers deterministic policy block with zero Razorpay orders', async () => {
     const res = await request(app)
       .post('/api/recovery/evaluate')
       .send({
@@ -93,7 +93,7 @@ describe('D2.6 — Demo Data Integrity & Provenance Verification', () => {
   });
 
   // 7. Security Check: Zero Secret Leakage
-  it('D2.6-7: Asserts zero secret leakage in static HTML and API endpoints', async () => {
+  it('D2.7-7: Asserts zero secret leakage in static HTML and API endpoints', async () => {
     const htmlRes = await request(app).get('/index.html');
     if (config.razorpayKeySecret) {
       expect(htmlRes.text).not.toContain(config.razorpayKeySecret);
@@ -106,8 +106,23 @@ describe('D2.6 — Demo Data Integrity & Provenance Verification', () => {
     }
   });
 
-  // 8. Disaggregated Latency Reporting
-  it('D2.6-8: GET /api/metrics exposes disaggregated latencies with explicit provenance', async () => {
+  // 8. Backend Authoritative Synthetic Benchmark Metrics
+  it('D2.7-8: GET /api/metrics contains authoritative synthetic benchmark object with 201/337 recoveries', async () => {
+    const res = await request(app).get('/api/metrics');
+    expect(res.status).toBe(200);
+    expect(res.body.synthetic_benchmark).toBeDefined();
+    expect(res.body.synthetic_benchmark.total_sessions).toBe(500);
+    expect(res.body.synthetic_benchmark.recovered_transactions).toBe(201);
+    expect(res.body.synthetic_benchmark.eligible_failures).toBe(337);
+    expect(res.body.synthetic_benchmark.recovery_rate).toBe(59.64);
+    expect(res.body.synthetic_benchmark.recovered_gmv_inr).toBe(1045200);
+    expect(res.body.synthetic_benchmark.gmv_recovery_rate).toBe(63.30);
+    expect(res.body.synthetic_benchmark.unauthorized_transactions).toBe(0);
+    expect(res.body.synthetic_benchmark.provenance).toBe('SYNTHETIC BENCHMARK');
+  });
+
+  // 9. Disaggregated Latency Reporting
+  it('D2.7-9: GET /api/metrics exposes disaggregated latencies with explicit provenance', async () => {
     const res = await request(app).get('/api/metrics');
     expect(res.status).toBe(200);
     expect(res.body.latency_breakdown.deterministic_engine.provenance).toBe('LOCAL / SYNTHETIC / MOCK');

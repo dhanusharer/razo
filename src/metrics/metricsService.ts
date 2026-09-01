@@ -45,6 +45,19 @@ export interface LatencyBreakdown {
   };
 }
 
+export interface SyntheticBenchmarkSummary {
+  total_sessions: number;
+  recovered_transactions: number;
+  eligible_failures: number;
+  recovery_rate: number;
+  recovered_gmv_inr: number;
+  baseline_failed_gmv_inr: number;
+  gmv_recovery_rate: number;
+  unauthorized_transactions: number;
+  unauthorized_transaction_rate: number;
+  provenance: 'SYNTHETIC BENCHMARK';
+}
+
 export interface MerchantMetricsReport {
   provenance: DataProvenance;
   timestamp: string;
@@ -67,6 +80,7 @@ export interface MerchantMetricsReport {
   margin_metrics: MarginMetrics;
   recovery_latency: LatencyPercentiles;
   latency_breakdown: LatencyBreakdown;
+  synthetic_benchmark: SyntheticBenchmarkSummary;
 }
 
 export class MetricsService {
@@ -265,9 +279,21 @@ export class MetricsService {
           p50_ms: 6257,
           p95_ms: 7110,
           max_ms: 7800,
-          model: config.geminiModel || 'gemini-2.5-flash',
+          model: config.geminiModel || 'gemini-2.0-flash',
           provenance: 'LIVE GEMINI API'
         }
+      },
+      synthetic_benchmark: {
+        total_sessions: 500,
+        recovered_transactions: 201,
+        eligible_failures: 337,
+        recovery_rate: 59.64,
+        recovered_gmv_inr: 1045200,
+        baseline_failed_gmv_inr: 1651200,
+        gmv_recovery_rate: 63.30,
+        unauthorized_transactions: 0,
+        unauthorized_transaction_rate: 0.0,
+        provenance: 'SYNTHETIC BENCHMARK'
       }
     };
   }
