@@ -17,12 +17,12 @@
 │ 00:25 - 00:55 │ Click "Run Live Golden Recovery"          │ Live Autonomous Recovery Flow            │
 │               │ Razorpay Checkout popup modal appears     │ Razorpay Execution & Webhook Settlement  │
 ├───────────────┼───────────────────────────────────────────┼──────────────────────────────────────────┤
-│ 00:55 - 01:20 │ Click "Test Safe Escalation"              │ Safety Proof: Deterministic Block        │
-│               │ Show ESCALATION_REQUIRED & Zero Orders    │ Zero Mutations Guarantee                 │
+│ 00:55 - 01:20 │ Click "Test Safe Escalation"              │ Policy Containment: Deterministic Block  │
+│               │ Show ESCALATION_REQUIRED & Zero Orders    │ Zero Orders for Blocked Scenario         │
 ├───────────────┼───────────────────────────────────────────┼──────────────────────────────────────────┤
-│ 01:20 - 01:45 │ Click "Policies" tab, then "Benchmark"    │ Mathematical Bounding & 500-Session Data │
+│ 01:20 - 01:45 │ Click "Policies" tab, then "Benchmark"    │ Bounded Policy & 500-Session Benchmark   │
 ├───────────────┼───────────────────────────────────────────┼──────────────────────────────────────────┤
-│ 01:45 - 02:00 │ Terminal showing 111/111 passing tests    │ Closing Vision                           │
+│ 01:45 - 02:00 │ Terminal showing 115/115 passing tests    │ Closing Vision                           │
 └───────────────┴───────────────────────────────────────────┴──────────────────────────────────────────┘
 ```
 
@@ -32,7 +32,7 @@
 *(Screen: Show the Light FinTech Control Plane at `http://localhost:3000` with pristine white cards and clean typography.)*
 
 > **"Hello judges. In 2026, autonomous AI buyer agents are making purchasing decisions on behalf of consumers. But there is a silent crisis in agentic commerce: **mid-flight inventory depletion and price volatility.**  
-> When an agent tries to check out and the SKU is out of stock, the transaction fails completely, causing **40% cart abandonment**. Worse, if you give an LLM unconstrained access to a merchant's payment rails, it can hallucinate and purchase arbitrary, out-of-budget items.  
+> When an agent tries to check out and the SKU is out of stock, the transaction fails completely, causing **cart abandonment**. Worse, if you give an LLM unconstrained access to a merchant's payment rails, non-deterministic model outputs can result in unauthorized, out-of-budget purchases.  
 > **Enter Resilient-Agent-Relay: The transaction reliability layer for agentic commerce.** Our principle is simple: **AI recommends. Policy authorizes. Razorpay executes. Audit proves.**"**
 
 ---
@@ -49,20 +49,20 @@
 ---
 
 ### [00:55 – 01:20] Scene 3: Deterministic Safe Escalation
-*(Screen: Dismiss the modal or complete payment, then click `🛡️ Test Safe Escalation`. Show Step 4 turn Amber, Step 10 show ESCALATION_REQUIRED, and the zero orders guarantee.)*
+*(Screen: Dismiss the modal or complete payment, then click `🛡️ Test Safe Escalation`. Show Step 4 turn Amber, Step 10 show ESCALATION_REQUIRED, and the zero orders display.)*
 
-> **"Now, what happens if an AI agent goes rogue or attempts to exceed constraints? Let's test Safe Escalation.  
+> **"Now, what happens if an AI agent proposes a candidate outside defined policy constraints? Let's test Safe Escalation.  
 > Here, the buyer set a strict 1% price tolerance. Gemini proposes the same shoe with a +6.12% delta.  
 > Instantly, Policy Gate 1 **BLOCKS** the transaction. Steps 5 through 10 are completely halted.  
-> Notice the guarantee: **EXACTLY ZERO Razorpay orders or charges are created.** The system safely halts, requiring human escalation rather than financial loss."**
+> Notice the financial side effect: **Zero Razorpay orders created for this blocked scenario.** The system safely halts, requiring human escalation rather than financial loss."**
 
 ---
 
 ### [01:20 – 01:45] Scene 4: Bounded Policies, ROI Simulator & Adversarial Defense
-*(Screen: Click `Economic Benchmark` tab to show the Interactive ROI Simulator, then click `Adversarial Matrix` tab and click "Simulate Prompt Injection Attack".)*
+*(Screen: Click `Economic Benchmark` tab to show the Interactive ROI Simulator, then click `Adversarial Matrix` tab and click "Simulate Prompt Injection".)*
 
-> **"Under the hood, our Policy Engine computes the strict mathematical intersection of User Mandates and Merchant Policies. Our Interactive ROI Simulator shows that for a store doing 25,000 orders/month, this restores **₹3.58 Crores in annualized GMV**.  
-> Now look at our Adversarial Defense Matrix. We can actively launch a Prompt Injection attack attempting to buy an ₹8,50,000 Rolex for ₹1. In **0.02 milliseconds**, Gate 1 intercepts it—with mathematically proven zero orders created."**
+> **"Under the hood, our Policy Engine computes the strict mathematical intersection of User Mandates and Merchant Policies. Our Illustrative GMV Recovery Simulator models that for a 25,000 order/month store with an 8% stockout rate, an estimated ₹5.01 Crores in recoverable GMV can be modeled based on our controlled benchmark rate.  
+> Now look at our Adversarial Containment Matrix. We can actively test a simulated Prompt Injection attack attempting to buy an ₹8,50,000 Rolex for ₹1. In **0.02 milliseconds**, Gate 1 intercepts it—with zero Razorpay orders created and zero financial side effects."**
 
 ---
 

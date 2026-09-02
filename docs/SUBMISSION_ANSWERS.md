@@ -69,9 +69,9 @@ We engineered Resilient-Agent-Relay in strict TypeScript with a modular, securit
 • Payment Infrastructure (Razorpay):
   - Razorpay Orders API: Generates isolated, cryptographically tracked orders for recovered transactions.
   - Razorpay Standard Checkout SDK: Integrated into our Light FinTech Control Plane for real-time customer/agent payment authorization.
-  - Timing-Safe Verification: Employs crypto.timingSafeEqual for server-side checkout signature verification to defeat side-channel timing attacks.
+  - Timing-Safe Verification: Employs Node.js crypto.timingSafeEqual for server-side checkout signature verification to reduce timing side-channel leakage during verification.
   - Raw Wire-Byte Webhook Engine: Custom raw buffer tap in Express that verifies x-razorpay-signature against untouched wire-bytes before any JSON parsing.
-  - Event Idempotency: Deduplicates x-razorpay-event-id to guarantee zero duplicate order state transitions.
+  - Event Idempotency: Deduplicates x-razorpay-event-id to protect against duplicate order state mutations.
 
 • Advisory Intelligence Layer:
   - Google Gemini 2.5 Flash: Structured schema outputs enforcing typed candidate selection within bounded latency budgets (≤ 8.0s timeout with graceful fallback).
@@ -80,7 +80,7 @@ We engineered Resilient-Agent-Relay in strict TypeScript with a modular, securit
   - Mathematical intersection engine executing in 0.03ms—completely independent of AI non-determinism.
 
 • Frontend Control Plane:
-  - Custom Light FinTech Dashboard adhering to DESIGN.md v2.1 (#F8F9FA canvas, Mercury restraint, ClickUp density) featuring 5 interactive tabs: Live Recovery, Policies & Mandates, Economic Benchmark, Audit Ledger, and Product Catalog.
+  - Custom Light FinTech Dashboard adhering to DESIGN.md v2.1 (#F8F9FA canvas, Mercury restraint, ClickUp density) featuring 6 interactive tabs: Live Recovery, Policies & Mandates, Economic Benchmark, Audit Ledger, Product Catalog, and Adversarial Containment Matrix.
 ```
 
 ---
@@ -93,7 +93,7 @@ We engineered Resilient-Agent-Relay in strict TypeScript with a modular, securit
 Standard Express JSON parsers (express.json()) reconstruct parsed objects, altering key order and whitespace. This subtly mutates the wire payload, causing Razorpay's HMAC SHA256 webhook verification to fail intermittently. We solved this by implementing a custom raw buffer capture tap on the /api/webhooks route, preserving byte-for-byte fidelity for cryptographic hashing.
 
 2. Enforcing the "Separation of Powers":
-Preventing LLM hallucinations from translating into unauthorized financial transactions was our paramount challenge. We architected a strict boundary: the LLM is completely blind to payment credentials and has zero execution privilege. It can only propose candidate IDs; our deterministic code gates every order creation.
+Preventing LLM non-determinism from translating into unauthorized financial transactions was our paramount challenge. We architected a strict boundary: the LLM is completely blind to payment credentials and has zero execution privilege. It can only propose candidate IDs; our deterministic code gates every order creation.
 
 3. Live Checkout Key Synchronization:
 When launching the Razorpay Standard Checkout modal dynamically from an autonomous recovery flow, the frontend checkout options must authenticate against the matching Razorpay merchant account that generated the order. We engineered a dynamic public key binding that links the order to the active test rails without ever leaking secret credentials into the DOM.
@@ -105,9 +105,9 @@ When launching the Razorpay Standard Checkout modal dynamically from an autonomo
 **Prompt**: *What achievements in this project are you most proud of?*
 
 ```text
-1. 115 / 115 Passing Automated Tests: 100% green coverage across 10 test suites in ~2.4 seconds, rigorously proving state transitions, signature verification, timeout boundaries, and live adversarial attack containment.
-2. 500-Session Merchant Economic Benchmark & Interactive ROI Simulator: Proved that autonomous recovery restores 59.64% of failed checkouts (₹10.45 Lakhs in GMV) with an interactive revenue expansion engine modeling up to ₹3.58 Crores in annualized GMV recovery.
-3. 0.03ms Policy Latency & Adversarial Threat Matrix: Deterministic financial policy checks that intercept hostile prompt injection jailbreaks (e.g., Rolex ₹1 bypass) and webhook replay attacks in 0.02ms with zero orders created.
+1. 115 / 115 Passing Automated Tests: 100% green coverage across 10 test suites in ~2.4 seconds, rigorously proving state transitions, signature verification, timeout boundaries, and interactive adversarial containment.
+2. 500-Session Controlled Benchmark & Illustrative ROI Simulator: Evaluated autonomous recovery performance (59.64% recovery of eligible failures in controlled synthetic benchmark) with an interactive tool modeling scenario-based GMV recovery estimates.
+3. Sub-Millisecond Policy Containment & Adversarial Matrix: Deterministic financial policy checks that intercept prompt injection jailbreaks and webhook replays with zero Razorpay orders created for blocked scenarios.
 4. Production-Ready Design System: A bespoke, light-themed FinTech Transaction Control Plane with standardized SVG icons, 6 interactive tabs, and full auditability.
 ```
 
@@ -140,7 +140,7 @@ When launching the Razorpay Standard Checkout modal dynamically from an autonomo
 | Evaluation Pillar | Hackathon Weight | How Resilient-Agent-Relay Wins |
 | :--- | :---: | :--- |
 | **Innovation & Concept** | 25% | Decouples advisory LLM intelligence from deterministic monetary authorization for autonomous agentic commerce. |
-| **Technical Execution** | 25% | 111 / 111 passing tests, 10-step financial state machine, raw wire-byte HMAC verification, timing-safe equality. |
+| **Technical Execution** | 25% | 115 / 115 passing tests across 10 suites, 10-step financial state machine, raw wire-byte HMAC verification, timing-safe equality. |
 | **Razorpay Integration** | 20% | Deep native usage of Razorpay Orders API, Standard Checkout SDK, and Webhook capture event verifier. |
-| **Business Value & GMV** | 15% | Recovers 59.64% of lost checkouts and ₹10.45L GMV per 500 failure incidents without margin degradation. |
-| **UX & Product Polish** | 15% | High-density Light FinTech Control Plane (`DESIGN.md` v2.1) with 5 interactive tabs and zero secret leakage. |
+| **Business Value & GMV** | 15% | Controlled benchmark demonstrates 59.64% recovery of eligible checkout failures without margin degradation. |
+| **UX & Product Polish** | 15% | High-density Light FinTech Control Plane (`DESIGN.md` v2.1) with 6 interactive tabs and zero secret leakage. |
