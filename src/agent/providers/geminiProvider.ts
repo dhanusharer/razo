@@ -34,7 +34,10 @@ export class GeminiLLMProvider implements LLMProvider {
       generationConfig: {
         responseMimeType: 'application/json',
         temperature: 0.1,
-        maxOutputTokens: 150
+        maxOutputTokens: 1000,
+        thinkingConfig: {
+          thinkingBudget: 0
+        }
       }
     };
 
@@ -68,9 +71,14 @@ export class GeminiLLMProvider implements LLMProvider {
     try {
       parsed = JSON.parse(rawText);
     } catch {
-      // Strip possible markdown fences if returned
-      const cleaned = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
-      parsed = JSON.parse(cleaned);
+      // Extract the first matching { ... } JSON block if LLM included conversational text or markdown
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        parsed = JSON.parse(jsonMatch[0]);
+      } else {
+        const cleaned = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+        parsed = JSON.parse(cleaned);
+      }
     }
 
     if (!parsed.selected_product_id) {

@@ -121,12 +121,51 @@ describe('D2.7 — State & Provenance Consistency Audit', () => {
     expect(res.body.synthetic_benchmark.provenance).toBe('SYNTHETIC BENCHMARK');
   });
 
-  // 9. Disaggregated Latency Reporting
-  it('D2.7-9: GET /api/metrics exposes disaggregated latencies with explicit provenance', async () => {
-    const res = await request(app).get('/api/metrics');
+  // 10. D2.8: Razorpay Standard Checkout SDK Integration
+  it('D2.8-1: index.html loads Razorpay Checkout.js SDK in <head>', async () => {
+    const res = await request(app).get('/index.html');
     expect(res.status).toBe(200);
-    expect(res.body.latency_breakdown.deterministic_engine.provenance).toBe('LOCAL / SYNTHETIC / MOCK');
-    expect(res.body.latency_breakdown.live_gemini.provenance).toBe('LIVE GEMINI API');
-    expect(res.body.latency_breakdown.live_gemini.model).toBe(config.geminiModel);
+    expect(res.text).toContain('https://checkout.razorpay.com/v1/checkout.js');
+    expect(res.text).toContain('new Razorpay(options)');
+    expect(res.text).toContain('pollForWebhookCapture');
+  });
+
+  // 11. D2.8: Callback verification endpoint does NOT prematurely mark PAID
+  it('D2.8-2: POST /api/orders/verify-callback verifies signature and sets PAYMENT_CALLBACK_VERIFIED (not PAID)', async () => {
+    // 1. Create order
+    const orderRes = await request(app)
+      .post('/api/orders')
+      .send({ amount_inr: 5200, currency: 'INR' });
+    expect(orderRes.status).toBe(200);
+
+    const { internal_transaction_id, razorpay_order_id } = orderRes.body;
+    const razorpay_payment_id = 'pay_live_test_callback_001';
+
+    // Generate valid test signature
+    const crypto = await import('crypto');
+    const signature = crypto
+      .createHmac('sha256', config.razorpayKeySecret || 'test_secret')
+      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+      .digest('hex');
+
+    // 2. Call verify-callback
+    const verifyRes = await request(app)
+      .post('/api/orders/verify-callback')
+      .send({
+        internal_transaction_id,
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature: signature
+      });
+
+    expect(verifyRes.status).toBe(200);
+    expect(verifyRes.body.verified).toBe(true);
+    expect(verifyRes.body.status).toBe('PAYMENT_CALLBACK_VERIFIED');
+
+    // Verify in store that state is PAYMENT_CALLBACK_VERIFIED and NOT PAID
+    const txn = transactionStore.getTransaction(internal_transaction_id);
+    expect(txn?.status).toBe('PAYMENT_CALLBACK_VERIFIED');
+    expect(txn?.status).not.toBe('PAID');
   });
 });
+

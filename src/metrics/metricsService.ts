@@ -279,7 +279,7 @@ export class MetricsService {
           p50_ms: 6257,
           p95_ms: 7110,
           max_ms: 7800,
-          model: config.geminiModel || 'gemini-2.0-flash',
+          model: config.geminiModel || 'gemini-2.5-flash',
           provenance: 'LIVE GEMINI API'
         }
       },

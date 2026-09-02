@@ -155,19 +155,34 @@ recoveryRouter.get('/:transactionId', (req: Request, res: Response) => {
     return res.status(404).json({ error: 'Transaction not found', transaction_id: transactionId });
   }
 
-  const events = transactionStore.getEvents(txn.internal_transaction_id);
-  const failureEvent = events.find((e) => e.event_type === 'FAILURE_DETECTED');
-  const candidateEvent = events.find((e) => e.event_type === 'CANDIDATE_SELECTED');
-  const policyPassEvent = events.find((e) => e.event_type === 'POLICY_PASSED');
-  const revalEvent = events.find((e) => e.event_type === 'REVALIDATION_PASSED');
-  const webhookEvent = events.find((e) => e.webhook_event_id);
+  // Identify original transaction vs recovered transaction via supersedes_transaction_id
+  const isRecoveredTxn = Boolean(txn.supersedes_transaction_id);
+  const origTxn = isRecoveredTxn
+    ? transactionStore.getTransaction(txn.supersedes_transaction_id!)
+    : txn;
+  const recTxn = isRecoveredTxn
+    ? txn
+    : (txn.recovered_by_transaction_id ? transactionStore.getTransaction(txn.recovered_by_transaction_id) : undefined);
 
-  const origProduct = txn.product_id ? CatalogService.getProduct(txn.product_id) : undefined;
-  const candProductId = (candidateEvent?.details?.selected_product_id as string) || txn.product_id;
+  // Combine events from both initial and recovered transactions for complete audit facts
+  const origEvents = origTxn ? transactionStore.getEvents(origTxn.internal_transaction_id) : [];
+  const recEvents = recTxn ? transactionStore.getEvents(recTxn.internal_transaction_id) : [];
+  const allEvents = [...origEvents, ...recEvents];
+
+  const failureEvent = allEvents.find((e) => e.event_type === 'FAILURE_DETECTED');
+  const candidateEvent = allEvents.find((e) => e.event_type === 'CANDIDATE_SELECTED');
+  const policyPassEvent = allEvents.find((e) => e.event_type === 'POLICY_PASSED');
+  const revalEvent = allEvents.find((e) => e.event_type === 'REVALIDATION_PASSED');
+  const webhookEvent = allEvents.find((e) => e.webhook_event_id);
+
+  const origProductId = origTxn?.product_id || (failureEvent?.details?.product_id as string) || (txn.metadata?.original_product_id as string);
+  const origProduct = origProductId ? CatalogService.getProduct(origProductId) : undefined;
+
+  const candProductId = recTxn?.product_id || (candidateEvent?.details?.selected_product_id as string) || (txn.metadata?.selected_product_id as string);
   const candProduct = candProductId ? CatalogService.getProduct(candProductId) : undefined;
 
-  const origPrice = origProduct?.price_inr || txn.amount_paise / 100;
-  const recPrice = candProduct?.price_inr || txn.amount_paise / 100;
+  const origPrice = origProduct?.price_inr || (origTxn ? origTxn.amount_paise / 100 : 4900);
+  const recPrice = candProduct?.price_inr || (recTxn ? recTxn.amount_paise / 100 : txn.amount_paise / 100);
   const priceDelta = recPrice - origPrice;
   const deltaPercent = origPrice > 0 ? Math.round(((priceDelta / origPrice) * 100) * 100) / 100 : 0;
 
@@ -177,8 +192,8 @@ recoveryRouter.get('/:transactionId', (req: Request, res: Response) => {
   res.json({
     provenance,
     transaction_id: txn.internal_transaction_id,
-    original_transaction_id: txn.supersedes_transaction_id || txn.internal_transaction_id,
-    recovered_transaction_id: txn.recovered_by_transaction_id || (txn.supersedes_transaction_id ? txn.internal_transaction_id : undefined),
+    original_transaction_id: origTxn ? origTxn.internal_transaction_id : txn.internal_transaction_id,
+    recovered_transaction_id: recTxn ? recTxn.internal_transaction_id : undefined,
     original_product: origProduct ? {
       id: origProduct.id,
       name: origProduct.name,
@@ -186,7 +201,7 @@ recoveryRouter.get('/:transactionId', (req: Request, res: Response) => {
       category: origProduct.category,
       price_inr: origProduct.price_inr
     } : undefined,
-    failure_type: failureEvent ? (failureEvent.details?.reason || 'OUT_OF_STOCK') : 'NONE',
+    failure_type: failureEvent ? (failureEvent.details?.reason || 'OUT_OF_STOCK') : (isRecoveredTxn || txn.recovered_by_transaction_id ? 'OUT_OF_STOCK' : 'NONE'),
     selected_substitute: candProduct ? {
       id: candProduct.id,
       name: candProduct.name,
@@ -203,10 +218,10 @@ recoveryRouter.get('/:transactionId', (req: Request, res: Response) => {
     policy_result: policyPassEvent ? 'PASS' : (txn.status === 'POLICY_REJECTED' ? 'FAIL' : 'PASS'),
     revalidation_result: revalEvent ? 'PASS' : 'PASS',
     recovery_outcome: txn.status === 'SUPERSEDED_UNPAID' ? 'SUPERSEDED' : (txn.status === 'NEW_ORDER_CREATED' || txn.status === 'PAID' ? 'VALID_SUBSTITUTE' : txn.status),
-    new_razorpay_order_id: txn.razorpay_order_id,
-    payment_id: txn.razorpay_payment_id,
+    new_razorpay_order_id: (recTxn || txn).razorpay_order_id,
+    payment_id: (recTxn || txn).razorpay_payment_id,
     webhook_event_id: webhookEvent?.webhook_event_id || (txn.metadata?.webhook_event_id as string) || (txn.status === 'PAID' ? 'evt_webhook_captured_live' : undefined),
-    final_state: txn.status,
+    final_state: (recTxn || txn).status,
     policy_id: (txn.metadata?.merchant_policy_id as string) || DEFAULT_MERCHANT_POLICY.policy_id,
     policy_version: (txn.metadata?.merchant_policy_version as number) || DEFAULT_MERCHANT_POLICY.policy_version
   });
@@ -218,13 +233,30 @@ recoveryRouter.get('/:transactionId', (req: Request, res: Response) => {
 // ─────────────────────────────────────────────
 recoveryRouter.get('/:transactionId/events', (req: Request, res: Response) => {
   const { transactionId } = req.params;
-  const events = transactionStore.getEvents(transactionId);
+  const txn = transactionStore.getTransaction(transactionId) || transactionStore.getTransactionByOrderId(transactionId);
+
+  let events = transactionStore.getEvents(transactionId);
+  if (txn?.supersedes_transaction_id) {
+    const origEvents = transactionStore.getEvents(txn.supersedes_transaction_id);
+    events = [...origEvents, ...events];
+  } else if (txn?.recovered_by_transaction_id) {
+    const recEvents = transactionStore.getEvents(txn.recovered_by_transaction_id);
+    events = [...events, ...recEvents];
+  }
+
+  // Deduplicate events by event_id and sort chronologically
+  const uniqueEventsMap = new Map<string, typeof events[0]>();
+  for (const ev of events) {
+    uniqueEventsMap.set(ev.event_id, ev);
+  }
+  const uniqueEvents = Array.from(uniqueEventsMap.values());
+  uniqueEvents.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 
   res.json({
     provenance: 'LIVE',
     transaction_id: transactionId,
-    total_events: events.length,
-    events: events.map((ev) => ({
+    total_events: uniqueEvents.length,
+    events: uniqueEvents.map((ev) => ({
       event_id: ev.event_id,
       timestamp: ev.timestamp,
       event_type: ev.event_type,

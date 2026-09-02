@@ -140,22 +140,50 @@ describe('D1 — Demo API & Read-Only Product Surface', () => {
 
     for (const ep of endpoints) {
       const res = await request(app).get(ep);
-      const bodyStr = JSON.stringify(res.body);
-
-      // Verify no Razorpay key secret value is leaked
+      const text = JSON.stringify(res.body);
       if (config.razorpayKeySecret) {
-        expect(bodyStr).not.toContain(config.razorpayKeySecret);
+        expect(text).not.toContain(config.razorpayKeySecret);
       }
-
-      // Verify no Razorpay webhook secret value is leaked
       if (config.razorpayWebhookSecret) {
-        expect(bodyStr).not.toContain(config.razorpayWebhookSecret);
+        expect(text).not.toContain(config.razorpayWebhookSecret);
       }
-
-      // Verify no Gemini API key value is leaked
       if (config.geminiApiKey) {
-        expect(bodyStr).not.toContain(config.geminiApiKey);
+        expect(text).not.toContain(config.geminiApiKey);
       }
     }
+  });
+
+  // 9. Area C Ledger Mapping: Original vs Substitute Product Resolution
+  it('D1-9: GET /api/recovery/:id resolves original product and substitute via supersedes_transaction_id', async () => {
+    // Execute mock recovery
+    const evalRes = await request(app)
+      .post('/api/recovery/evaluate')
+      .send({
+        user_intent: 'Buy me Adidas running shoes, size 10, under ₹5,500.',
+        original_product_id: 'ADIDAS-RUN-01',
+        simulate_initial_oos: true
+      });
+
+    expect(evalRes.status).toBe(200);
+    const recTxnId = evalRes.body.recovered_transaction_id;
+    expect(recTxnId).toBeDefined();
+
+    // Fetch detail view
+    const detailRes = await request(app).get(`/api/recovery/${recTxnId}`);
+    expect(detailRes.status).toBe(200);
+    expect(detailRes.body.original_product).toBeDefined();
+    expect(detailRes.body.original_product.id).toBe('ADIDAS-RUN-01');
+    expect(detailRes.body.original_product.name).toBe('Adidas Boston 12');
+    expect(detailRes.body.original_product.price_inr).toBe(4900);
+
+    expect(detailRes.body.failure_type).toBe('OUT_OF_STOCK');
+
+    expect(detailRes.body.selected_substitute).toBeDefined();
+    expect(detailRes.body.selected_substitute.id).toBe('ADIDAS-RUN-02');
+    expect(detailRes.body.selected_substitute.name).toBe('Adidas Adizero SL2');
+    expect(detailRes.body.selected_substitute.price_inr).toBe(5200);
+
+    expect(detailRes.body.price_delta_inr).toBe(300);
+    expect(detailRes.body.price_delta_percent).toBe(6.12);
   });
 });
