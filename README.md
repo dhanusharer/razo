@@ -15,6 +15,10 @@
 
 *Autonomous checkout recovery with mathematically bounded financial authorization for agentic commerce workflows.*
 
+<br/><br/>
+<img src="docs/assets/cover.jpg" alt="Resilient-Agent-Relay Hero Cover" width="100%" style="border-radius: 10px; border: 1px solid #E4E7EB;" />
+<br/><br/>
+
 [Executive Summary](#-executive-summary) •
 [The Threat Model](#-the-threat-model-the-autonomous-checkout-crisis) •
 [Architecture](#-system-architecture--separation-of-powers) •
