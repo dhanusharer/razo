@@ -4,59 +4,98 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Resilient-Agent-Relay — Transaction Reliability Layer for Agentic Commerce</title>
+  
+  <!-- Typography from Design System -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Razorpay Standard Checkout SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   <style>
+    /* ==========================================================================
+       CANONICAL DESIGN TOKENS (DESIGN.md v2.1)
+       ========================================================================== */
     :root {
-      --bg: #F8F9FA;
-      --sidebar-bg: #FFFFFF;
-      --sidebar-border: #E4E7EB;
-      --card-bg: #FFFFFF;
-      --card-secondary: #F1F3F5;
-      --card-border: #E4E7EB;
-      --card-border-hover: #D0D5DD;
-      
-      --text: #172033;
+      /* Surface & Canvas (Strict #F8F9FA) */
+      --bg-canvas: #F8F9FA;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F1F3F5;
+      --bg-elevated: #FFFFFF;
+      --border-default: #E4E7EB;
+      --border-subtle: #F1F3F5;
+      --border-hover: #D0D5DD;
+
+      /* Typography Colors */
+      --text-primary: #172033;
       --text-secondary: #667085;
       --text-muted: #98A2B3;
-      
-      --accent: #0284C7;
+
+      /* Interactive & Razorpay Blue */
+      --accent-primary: #0284C7;
       --accent-hover: #0369A1;
-      --accent-bg: #EFF6FF;
+      --accent-subtle: #EFF6FF;
       --accent-border: #BAE6FD;
-      
+
+      /* Financial Status Colors */
       --success: #059669;
       --success-dark: #065F46;
-      --success-bg: #ECFDF5;
+      --success-subtle: #ECFDF5;
       --success-border: #A7F3D0;
-      
+
       --warning: #D97706;
       --warning-dark: #92400E;
-      --warning-bg: #FFFBEB;
+      --warning-subtle: #FFFBEB;
       --warning-border: #FDE68A;
-      
+
       --danger: #DC2626;
       --danger-dark: #991B1B;
-      --danger-bg: #FEF2F2;
+      --danger-subtle: #FEF2F2;
       --danger-border: #FECACA;
-      
-      --purple: #7C3AED;
-      --purple-bg: #F5F3FF;
-      --purple-border: #DDD6FE;
-      
-      --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
-      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-      
-      --shadow-sm: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
-      --shadow-md: 0 1px 3px 0 rgba(16, 24, 40, 0.06), 0 1px 2px 0 rgba(16, 24, 40, 0.04);
-      --shadow-lg: 0 4px 6px -1px rgba(16, 24, 40, 0.08), 0 2px 4px -2px rgba(16, 24, 40, 0.04);
+
+      --ai-purple: #7C3AED;
+      --ai-purple-subtle: #F5F3FF;
+      --ai-purple-border: #DDD6FE;
+
+      /* Typography Scale & Font Roles */
+      --font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace;
+
+      /* 4px Spacing Grid */
+      --spacing-4: 4px;
+      --spacing-8: 8px;
+      --spacing-12: 12px;
+      --spacing-16: 16px;
+      --spacing-20: 20px;
+      --spacing-24: 24px;
+      --spacing-28: 28px;
+      --spacing-32: 32px;
+      --spacing-48: 48px;
+      --spacing-64: 64px;
+
+      /* Radii */
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-card: 10px;
+      --radius-card-lg: 14px;
+      --radius-pill: 9999px;
+
+      /* Elevation */
+      --shadow-subtle: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+      --shadow-card: 0 1px 3px 0 rgba(16, 24, 40, 0.06), 0 1px 2px 0 rgba(16, 24, 40, 0.04);
+      --shadow-hover: 0 4px 6px -1px rgba(16, 24, 40, 0.08), 0 2px 4px -2px rgba(16, 24, 40, 0.04);
+      --shadow-modal: 0 12px 16px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     body {
       font-family: var(--font-sans);
-      background: var(--bg);
-      color: var(--text);
+      background: var(--bg-canvas);
+      color: var(--text-primary);
       min-height: 100vh;
       display: flex;
       line-height: 1.5;
@@ -72,11 +111,11 @@
       min-height: 100vh;
     }
 
-    /* Sidebar */
+    /* Left Sidebar */
     .sidebar {
       width: 240px;
-      background: var(--sidebar-bg);
-      border-right: 1px solid var(--sidebar-border);
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-default);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
@@ -92,25 +131,26 @@
       gap: 0.75rem;
       margin-bottom: 2rem;
       padding-bottom: 1rem;
-      border-bottom: 1px solid var(--sidebar-border);
+      border-bottom: 1px solid var(--border-default);
     }
     .brand-logo {
       width: 32px;
       height: 32px;
-      border-radius: 8px;
-      background: #0284C7;
+      border-radius: var(--radius-lg);
+      background: var(--accent-primary);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
       font-size: 1.1rem;
-      color: #fff;
+      color: #FFFFFF;
+      font-family: var(--font-display);
     }
     .brand-info-name {
       font-size: 0.95rem;
       font-weight: 700;
       letter-spacing: -0.01em;
-      color: var(--text);
+      color: var(--text-primary);
       line-height: 1.2;
     }
     .brand-info-tag {
@@ -140,7 +180,7 @@
       align-items: center;
       gap: 0.65rem;
       padding: 0.55rem 0.65rem;
-      border-radius: 6px;
+      border-radius: var(--radius-md);
       color: var(--text-secondary);
       text-decoration: none;
       font-size: 0.82rem;
@@ -153,21 +193,22 @@
       flex-shrink: 0;
     }
     .nav-item:hover {
-      background: var(--card-secondary);
-      color: var(--text);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
     }
     .nav-item.active {
-      background: var(--accent-bg);
-      color: var(--accent);
+      background: var(--accent-subtle);
+      color: var(--accent-primary);
       font-weight: 600;
     }
 
+    /* Sidebar Status Footer */
     .sidebar-status {
       margin-top: auto;
       padding: 0.85rem;
-      background: var(--card-secondary);
-      border: 1px solid var(--sidebar-border);
-      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
@@ -186,8 +227,8 @@
       margin-right: 4px;
     }
     .dot-green { background: var(--success); }
-    .dot-blue { background: var(--accent); }
-    .dot-purple { background: var(--purple); }
+    .dot-blue { background: var(--accent-primary); }
+    .dot-purple { background: var(--ai-purple); }
 
     /* Main Content Area */
     .main-content {
@@ -204,8 +245,8 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem 1.75rem;
-      border-bottom: 1px solid var(--sidebar-border);
-      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-default);
+      background: var(--bg-surface);
       position: sticky;
       top: 0;
       z-index: 40;
@@ -214,7 +255,8 @@
       font-size: 1.15rem;
       font-weight: 700;
       letter-spacing: -0.02em;
-      color: var(--text);
+      color: var(--text-primary);
+      font-family: var(--font-display);
     }
     .header-title-group p {
       font-size: 0.75rem;
@@ -227,27 +269,27 @@
       flex-wrap: wrap;
     }
 
-    /* Badges */
+    /* Standardized Badges */
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
       padding: 0.2rem 0.55rem;
-      border-radius: 6px;
+      border-radius: var(--radius-md);
       font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
       font-family: var(--font-mono);
     }
-    .badge-green  { background: var(--success-bg); color: var(--success-dark); border: 1px solid var(--success-border); }
-    .badge-yellow { background: var(--warning-bg); color: var(--warning-dark); border: 1px solid var(--warning-border); }
-    .badge-red    { background: var(--danger-bg); color: var(--danger-dark); border: 1px solid var(--danger-border); }
-    .badge-blue   { background: var(--accent-bg); color: var(--accent-hover); border: 1px solid var(--accent-border); }
-    .badge-purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
-    .badge-gray   { background: var(--card-secondary); color: var(--text-secondary); border: 1px solid var(--card-border); }
+    .badge-green  { background: var(--success-subtle); color: var(--success-dark); border: 1px solid var(--success-border); }
+    .badge-yellow { background: var(--warning-subtle); color: var(--warning-dark); border: 1px solid var(--warning-border); }
+    .badge-red    { background: var(--danger-subtle); color: var(--danger-dark); border: 1px solid var(--danger-border); }
+    .badge-blue   { background: var(--accent-subtle); color: var(--accent-hover); border: 1px solid var(--accent-border); }
+    .badge-purple { background: var(--ai-purple-subtle); color: var(--ai-purple); border: 1px solid var(--ai-purple-border); }
+    .badge-gray   { background: var(--bg-subtle); color: var(--text-secondary); border: 1px solid var(--border-default); }
 
-    /* Workspace Content */
+    /* Workspace Content Container */
     .workspace {
       padding: 1.5rem 1.75rem;
       display: flex;
@@ -258,7 +300,7 @@
       width: 100%;
     }
 
-    /* Views */
+    /* Tab Views */
     .tab-view {
       display: flex;
       flex-direction: column;
@@ -283,7 +325,7 @@
     }
     .btn {
       padding: 0.55rem 1.1rem;
-      border-radius: 6px;
+      border-radius: var(--radius-md);
       font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
@@ -298,61 +340,61 @@
     .btn:hover { transform: translateY(-1px); }
     .btn:active { transform: translateY(0); }
     .btn-primary {
-      background: #0284C7;
+      background: var(--accent-primary);
       color: #FFFFFF;
-      border-color: #0284C7;
-      box-shadow: var(--shadow-sm);
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-subtle);
     }
     .btn-primary:hover {
-      background: #0369A1;
+      background: var(--accent-hover);
     }
     .btn-warning {
-      background: #D97706;
+      background: var(--warning);
       color: #FFFFFF;
-      border-color: #D97706;
-      box-shadow: var(--shadow-sm);
+      border-color: var(--warning);
+      box-shadow: var(--shadow-subtle);
     }
     .btn-warning:hover {
-      background: #B45309;
+      background: var(--warning-dark);
     }
     .btn-secondary {
-      background: #FFFFFF;
+      background: var(--bg-surface);
       color: var(--text-secondary);
-      border-color: var(--card-border);
-      box-shadow: var(--shadow-sm);
+      border-color: var(--border-default);
+      box-shadow: var(--shadow-subtle);
     }
     .btn-secondary:hover {
-      color: var(--text);
-      background: var(--card-secondary);
+      color: var(--text-primary);
+      background: var(--bg-subtle);
     }
 
     /* Notification Banner */
     .banner {
       padding: 0.75rem 1rem;
-      border-radius: 8px;
+      border-radius: var(--radius-lg);
       font-size: 0.82rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-subtle);
     }
-    .banner-success { background: var(--success-bg); border: 1px solid var(--success-border); color: var(--success-dark); }
-    .banner-warning { background: var(--warning-bg); border: 1px solid var(--warning-border); color: var(--warning-dark); }
+    .banner-success { background: var(--success-subtle); border: 1px solid var(--success-border); color: var(--success-dark); }
+    .banner-warning { background: var(--warning-subtle); border: 1px solid var(--warning-border); color: var(--warning-dark); }
 
     /* Card Containers */
     .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
       padding: 1.25rem;
       position: relative;
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-card);
     }
     .card-title {
       font-size: 0.88rem;
       font-weight: 700;
-      color: var(--text);
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -361,15 +403,16 @@
 
     /* PRIMARY HERO: RECOVERY RESULT CARD */
     .hero-recovery-card {
-      background: #FFFFFF;
-      border: 1px solid var(--card-border);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card-lg);
     }
     .hero-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding-bottom: 0.85rem;
-      border-bottom: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--border-default);
       margin-bottom: 1rem;
     }
     .hero-title {
@@ -377,7 +420,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--text);
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -395,9 +438,9 @@
     }
     
     .product-box {
-      background: var(--card-secondary);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
       padding: 1rem;
     }
     .product-box.original {
@@ -405,7 +448,7 @@
     }
     .product-box.recovered {
       border-left: 3px solid var(--success);
-      background: var(--success-bg);
+      background: var(--success-subtle);
       border-color: var(--success-border);
     }
     .product-label {
@@ -419,7 +462,7 @@
     .product-name {
       font-size: 1.05rem;
       font-weight: 700;
-      color: var(--text);
+      color: var(--text-primary);
       margin-bottom: 0.2rem;
     }
     .product-meta {
@@ -432,7 +475,7 @@
       font-family: var(--font-sans);
       font-size: 1.15rem;
       font-weight: 800;
-      color: var(--text);
+      color: var(--text-primary);
       letter-spacing: -0.02em;
     }
     
@@ -444,11 +487,11 @@
       text-align: center;
     }
     .delta-badge {
-      background: var(--success-bg);
+      background: var(--success-subtle);
       color: var(--success-dark);
       border: 1px solid var(--success-border);
       padding: 0.25rem 0.6rem;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       font-family: var(--font-sans);
       font-size: 0.78rem;
       font-weight: 700;
@@ -468,15 +511,15 @@
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
       padding-top: 0.85rem;
-      border-top: 1px solid var(--card-border);
+      border-top: 1px solid var(--border-default);
     }
     @media (max-width: 700px) {
       .authority-grid { grid-template-columns: 1fr; }
     }
     .auth-card {
-      background: var(--card-secondary);
-      border: 1px solid var(--card-border);
-      border-radius: 6px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
       padding: 0.65rem 0.85rem;
       display: flex;
       align-items: center;
@@ -491,17 +534,17 @@
     }
     .auth-rules {
       font-size: 0.75rem;
-      color: var(--text);
+      color: var(--text-primary);
       font-family: var(--font-mono);
     }
 
     /* Subordinate 10-Step Execution Stepper */
     .pipeline-container {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
       padding: 1.15rem;
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-card);
     }
     .pipeline-grid {
       display: grid;
@@ -513,23 +556,23 @@
       .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
     }
     .pipeline-step {
-      background: var(--card-secondary);
-      border: 1px solid var(--card-border);
-      border-radius: 6px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
       padding: 0.65rem 0.75rem;
       transition: all 0.15s ease;
     }
     .pipeline-step.active-pass {
       border-color: var(--success);
-      background: var(--success-bg);
+      background: var(--success-subtle);
     }
     .pipeline-step.active-block {
       border-color: var(--warning);
-      background: var(--warning-bg);
+      background: var(--warning-subtle);
     }
     .pipeline-step.active-fail {
       border-color: var(--danger);
-      background: var(--danger-bg);
+      background: var(--danger-subtle);
     }
     .step-num {
       font-size: 0.62rem;
@@ -542,7 +585,7 @@
     .step-title {
       font-size: 0.78rem;
       font-weight: 700;
-      color: var(--text);
+      color: var(--text-primary);
       margin-bottom: 0.2rem;
     }
     .step-desc {
@@ -563,12 +606,12 @@
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     }
     .kpi-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
       padding: 1rem;
       position: relative;
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-card);
     }
     .kpi-label {
       font-size: 0.68rem;
@@ -581,7 +624,7 @@
     .kpi-value {
       font-size: 1.5rem;
       font-weight: 800;
-      color: var(--text);
+      color: var(--text-primary);
       font-family: var(--font-sans);
       letter-spacing: -0.02em;
       line-height: 1.1;
@@ -610,16 +653,16 @@
     
     /* Why this substitute checklist */
     .why-box {
-      background: var(--card-secondary);
-      border: 1px solid var(--card-border);
-      border-radius: 6px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
       padding: 0.75rem;
     }
     .why-title {
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--accent-primary);
       letter-spacing: 0.05em;
       margin-bottom: 0.5rem;
     }
@@ -639,12 +682,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.4rem 0;
-      border-bottom: 1px solid var(--card-border);
+      padding: 0.45rem 0;
+      border-bottom: 1px solid var(--border-default);
       font-size: 0.78rem;
     }
     .prop-key { color: var(--text-secondary); font-weight: 500; }
-    .prop-val { font-family: var(--font-mono); font-weight: 600; text-align: right; color: var(--text); }
+    .prop-val { font-family: var(--font-mono); font-weight: 600; text-align: right; color: var(--text-primary); }
     .prop-val-amount { font-family: var(--font-sans); font-weight: 700; }
 
     /* Timeline */
@@ -660,17 +703,17 @@
       display: flex;
       gap: 0.65rem;
       padding: 0.55rem 0.75rem;
-      background: var(--card-secondary);
-      border-radius: 6px;
-      border: 1px solid var(--card-border);
-      border-left: 3px solid var(--accent);
+      background: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-default);
+      border-left: 3px solid var(--accent-primary);
       font-size: 0.75rem;
     }
     .timeline-item.success { border-left-color: var(--success); }
     .timeline-item.failure { border-left-color: var(--danger); }
     .timeline-time { color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.68rem; min-width: 65px; }
     .timeline-content { flex: 1; min-width: 0; }
-    .timeline-title { font-weight: 700; color: var(--text); }
+    .timeline-title { font-weight: 700; color: var(--text-primary); }
     .timeline-detail { color: var(--text-secondary); font-size: 0.7rem; margin-top: 0.1rem; overflow: hidden; text-overflow: ellipsis; }
 
     /* Tables */
@@ -681,22 +724,22 @@
       font-size: 0.78rem;
     }
     .data-table th {
-      background: var(--card-secondary);
+      background: var(--bg-subtle);
       padding: 0.65rem 0.75rem;
       color: var(--text-secondary);
       font-weight: 700;
       text-transform: uppercase;
       font-size: 0.68rem;
       letter-spacing: 0.05em;
-      border-bottom: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--border-default);
     }
     .data-table td {
       padding: 0.65rem 0.75rem;
-      border-bottom: 1px solid var(--card-border);
-      color: var(--text);
+      border-bottom: 1px solid var(--border-default);
+      color: var(--text-primary);
     }
     .data-table tr:hover td {
-      background: var(--card-secondary);
+      background: var(--bg-subtle);
     }
 
     /* Grid Layouts for Secondary Tabs */
@@ -707,6 +750,29 @@
     }
     @media (max-width: 900px) {
       .grid-2col { grid-template-columns: 1fr; }
+    }
+
+    /* Filter Bar for Audit */
+    .filter-bar {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+    .filter-btn {
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-default);
+      background: var(--bg-surface);
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent-subtle);
+      color: var(--accent-primary);
+      border-color: var(--accent-border);
     }
 
     /* Utilities */
@@ -750,7 +816,7 @@
         </div>
       </nav>
 
-      <!-- Bottom System Status -->
+      <!-- Bottom System Status Telemetry -->
       <div class="sidebar-status">
         <div class="status-row">
           <span style="color: var(--text-secondary);">Runtime AI</span>
@@ -813,7 +879,7 @@
             <div>
               <button id="btn-load-fixture" class="btn btn-secondary" onclick="loadDemoFixture()">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="11" y2="17"></line></svg>
-                <span>Load Golden-Path Fixture</span>
+                <span id="btn-load-fixture-label">Load Golden-Path Fixture</span>
               </button>
             </div>
           </div>
@@ -822,7 +888,7 @@
           <section class="card hero-recovery-card">
             <div class="hero-header">
               <div class="hero-title">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                 <span>Autonomous Transaction Recovery Result</span>
               </div>
               <div id="recovery-status-badge" class="badge badge-green">PAID ✓</div>
@@ -962,7 +1028,7 @@
               <div class="kpi-card">
                 <div class="kpi-label">Engine vs Gemini Latency</div>
                 <div class="kpi-value">
-                  <span id="kpi-engine-latency">0.03ms</span> / <span id="kpi-gemini-latency" style="color: var(--purple);">1.73s</span>
+                  <span id="kpi-engine-latency">0.03ms</span> / <span id="kpi-gemini-latency" style="color: var(--ai-purple);">1.73s</span>
                 </div>
                 <div class="kpi-sub">0.03ms Policy Engine · 1.73s Gemini 2.5 Flash</div>
               </div>
@@ -1010,7 +1076,7 @@
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Recommended Substitute</span>
-                  <span class="prop-val" id="dt-rec-prod" style="color: var(--accent);">Adidas Adizero SL2 (₹5,200)</span>
+                  <span class="prop-val" id="dt-rec-prod" style="color: var(--accent-primary);">Adidas Adizero SL2 (₹5,200)</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Price Delta</span>
@@ -1030,7 +1096,7 @@
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">AI Recommendation Logic</span>
-                  <span class="prop-val" id="dt-ai-reason" style="font-size: 0.72rem; color: var(--purple);">Selected by Gemini 2.5 Flash within policy boundaries.</span>
+                  <span class="prop-val" id="dt-ai-reason" style="font-size: 0.72rem; color: var(--ai-purple);">Selected by Gemini 2.5 Flash within policy boundaries.</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Razorpay Order ID</span>
@@ -1080,32 +1146,32 @@
             <div class="card">
               <div class="card-title">
                 <span>Merchant Policy Definition</span>
-                <span class="badge badge-blue">pol_default_merchant_v1</span>
+                <span class="badge badge-blue" id="policy-card-id">pol_default_merchant_v1</span>
               </div>
               <div class="prop-table">
                 <div class="prop-row">
                   <span class="prop-key">Policy Version</span>
-                  <span class="prop-val">v1 (Deterministic)</span>
+                  <span class="prop-val" id="policy-version">v1 (Deterministic)</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Gross Margin Floor</span>
-                  <span class="prop-val" style="color: var(--success);">≥ 10.00%</span>
+                  <span class="prop-val" id="policy-margin-floor" style="color: var(--success);">≥ 10.00%</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Max Allowed Price Delta</span>
-                  <span class="prop-val">≤ 15.00%</span>
+                  <span class="prop-val" id="policy-max-delta">≤ 15.00%</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Autonomous Recovery</span>
-                  <span class="prop-val" style="color: var(--success);">ENABLED (1 Attempt Max)</span>
+                  <span class="prop-val" id="policy-auto-rec" style="color: var(--success);">ENABLED (1 Attempt Max)</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">LLM Timeout Escalation</span>
-                  <span class="prop-val" style="color: var(--warning-dark);">SAFE_ESCALATE (≤ 8.0s)</span>
+                  <span class="prop-val" id="policy-timeout" style="color: var(--warning-dark);">SAFE_ESCALATE (≤ 8.0s)</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Evaluation Latency</span>
-                  <span class="prop-val" style="color: var(--accent);">0.03ms (Zero AI Dependency)</span>
+                  <span class="prop-val" style="color: var(--accent-primary);">0.03ms (Zero AI Dependency)</span>
                 </div>
               </div>
             </div>
@@ -1119,19 +1185,19 @@
               <div class="prop-table">
                 <div class="prop-row">
                   <span class="prop-key">Max Budget Ceiling</span>
-                  <span class="prop-val prop-val-amount">₹5,500</span>
+                  <span class="prop-val prop-val-amount" id="mandate-budget">₹5,500</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Max Price Delta Tolerance</span>
-                  <span class="prop-val">≤ 10.00%</span>
+                  <span class="prop-val" id="mandate-delta">≤ 10.00%</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Allowed Brand Whitelist</span>
-                  <span class="prop-val">['Adidas']</span>
+                  <span class="prop-val" id="mandate-brands">['Adidas']</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Allowed Category Whitelist</span>
-                  <span class="prop-val">['running_shoes']</span>
+                  <span class="prop-val" id="mandate-categories">['running_shoes']</span>
                 </div>
                 <div class="prop-row">
                   <span class="prop-key">Required Attributes</span>
@@ -1157,11 +1223,11 @@
             <div class="prop-table">
               <div class="prop-row">
                 <span class="prop-key">Effective Max Budget</span>
-                <span class="prop-val prop-val-amount" style="color: var(--accent);">₹5,500 (min(User Budget, Merchant Max))</span>
+                <span class="prop-val prop-val-amount" style="color: var(--accent-primary);">₹5,500 (min(User Budget, Merchant Max))</span>
               </div>
               <div class="prop-row">
                 <span class="prop-key">Effective Max Price Delta</span>
-                <span class="prop-val" style="color: var(--accent);">10.00% (min(User Tolerance 10%, Merchant 15%))</span>
+                <span class="prop-val" style="color: var(--accent-primary);">10.00% (min(User Tolerance 10%, Merchant 15%))</span>
               </div>
               <div class="prop-row">
                 <span class="prop-key">Effective Margin Floor</span>
@@ -1267,6 +1333,13 @@
               <span>Complete Transaction Event Trail</span>
               <span class="badge badge-purple">RAW EVENTS</span>
             </div>
+            
+            <div class="filter-bar">
+              <button class="filter-btn active" onclick="filterAuditEvents('ALL', this)">All Events</button>
+              <button class="filter-btn" onclick="filterAuditEvents('SUCCESS', this)">Success Only</button>
+              <button class="filter-btn" onclick="filterAuditEvents('FAILURE', this)">Failure / Blocked</button>
+            </div>
+
             <div class="timeline" id="full-audit-timeline" style="max-height: 600px;">
               <!-- Dynamic timeline content -->
             </div>
@@ -1366,6 +1439,7 @@
 
     window.addEventListener('DOMContentLoaded', async () => {
       await loadStatusAndMetrics();
+      await loadPolicies();
       await loadCatalog();
       loadDemoFixture();
     });
@@ -1380,12 +1454,32 @@
       });
 
       if (tabId === 'audit') {
-        const primaryTimeline = document.getElementById('timeline-container');
-        const fullTimeline = document.getElementById('full-audit-timeline');
-        if (primaryTimeline && fullTimeline) {
-          fullTimeline.innerHTML = primaryTimeline.innerHTML;
-        }
+        syncFullAuditTimeline();
       }
+    }
+
+    function syncFullAuditTimeline() {
+      const primaryTimeline = document.getElementById('timeline-container');
+      const fullTimeline = document.getElementById('full-audit-timeline');
+      if (primaryTimeline && fullTimeline) {
+        fullTimeline.innerHTML = primaryTimeline.innerHTML;
+      }
+    }
+
+    function filterAuditEvents(type, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const items = document.querySelectorAll('#full-audit-timeline .timeline-item');
+      items.forEach(item => {
+        if (type === 'ALL') {
+          item.style.display = 'flex';
+        } else if (type === 'SUCCESS') {
+          item.style.display = item.classList.contains('success') ? 'flex' : 'none';
+        } else if (type === 'FAILURE') {
+          item.style.display = (item.classList.contains('failure') || item.innerText.includes('FAIL') || item.innerText.includes('BLOCKED')) ? 'flex' : 'none';
+        }
+      });
     }
 
     function setSessionProvenance(prov) {
@@ -1417,6 +1511,24 @@
       }
     }
 
+    async function loadPolicies() {
+      try {
+        const res = await fetch('/api/policy');
+        const data = await res.json();
+        if (data.active_policy) {
+          const p = data.active_policy;
+          const idEl = document.getElementById('policy-card-id');
+          if (idEl) idEl.innerText = p.id || 'pol_default_merchant_v1';
+          const marginEl = document.getElementById('policy-margin-floor');
+          if (marginEl) marginEl.innerText = `≥ ${p.minimum_margin_percent?.toFixed(2) || 10.00}%`;
+          const deltaEl = document.getElementById('policy-max-delta');
+          if (deltaEl) deltaEl.innerText = `≤ ${p.max_price_delta_percent?.toFixed(2) || 15.00}%`;
+        }
+      } catch (err) {
+        console.error('Failed to load policies:', err);
+      }
+    }
+
     async function loadCatalog() {
       try {
         const res = await fetch('/api/catalog');
@@ -1445,12 +1557,21 @@
 
     async function loadDemoFixture() {
       try {
+        switchTab('recovery');
         const res = await fetch('/api/recovery/demo-fixture');
         const data = await res.json();
         setSessionProvenance('DEMO FIXTURE');
         renderRecoveryDetails(data, 'DEMO_FIXTURE');
         renderFullFinancialTimeline('DEMO_FIXTURE');
         resetPipelineToSuccess(data, false);
+
+        // Feedback on Fixture Button
+        const btnLabel = document.getElementById('btn-load-fixture-label');
+        if (btnLabel) {
+          const original = btnLabel.innerText;
+          btnLabel.innerText = '✓ Fixture Loaded';
+          setTimeout(() => { btnLabel.innerText = original; }, 1500);
+        }
       } catch (err) {
         console.error('Failed to load demo fixture:', err);
       }
@@ -1493,12 +1614,17 @@
 
           if (result.razorpay_order && typeof Razorpay !== 'undefined') {
             const options = {
-              key: 'rzp_test_placeholder',
+              key: result.key_id || 'rzp_test_placeholder',
               amount: result.razorpay_order.amount,
               currency: result.razorpay_order.currency,
               name: 'Resilient Agent Relay',
               description: 'Autonomous Recovery: Adidas Adizero SL2 (Size 10)',
               order_id: result.razorpay_order.id,
+              prefill: {
+                name: 'Agentic Buyer',
+                email: 'buyer@agentrelay.dev',
+                contact: '9999999999'
+              },
               handler: async function (response) {
                 try {
                   const verifyRes = await fetch('/api/orders/verify-callback', {
@@ -1793,6 +1919,7 @@
         `;
         container.appendChild(item);
       });
+      syncFullAuditTimeline();
     }
 
     function renderFullFinancialTimeline(mode) {
@@ -1873,6 +2000,7 @@
           </div>
         </div>
       `;
+      syncFullAuditTimeline();
     }
 
     function renderEscalationTimeline() {
@@ -1914,6 +2042,7 @@
           </div>
         </div>
       `;
+      syncFullAuditTimeline();
     }
   </script>
 </body>
