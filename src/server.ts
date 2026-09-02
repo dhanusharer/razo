@@ -6,6 +6,7 @@ import { config } from './config.js';
 import { ordersRouter } from './routes/orders.js';
 import { webhooksRouter } from './routes/webhooks.js';
 import { recoveryRouter } from './routes/recovery.js';
+import { adversarialRouter } from './routes/adversarial.js';
 import { transactionStore } from './state/transactionStore.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/orders', ordersRouter);
 app.use('/api/webhooks', webhooksRouter);
 app.use('/api/recovery', recoveryRouter);
+app.use('/api/adversarial', adversarialRouter);
 
 // ─────────────────────────────────────────────
 // GET /api/status

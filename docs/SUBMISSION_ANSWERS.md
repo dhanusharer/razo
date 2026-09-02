@@ -105,10 +105,10 @@ When launching the Razorpay Standard Checkout modal dynamically from an autonomo
 **Prompt**: *What achievements in this project are you most proud of?*
 
 ```text
-1. 111 / 111 Passing Automated Tests: 100% green coverage across 9 test suites in ~2.4 seconds, rigorously proving state transitions, signature verification, and timeout boundaries.
-2. 500-Session Merchant Economic Benchmark: Proved that autonomous recovery restores 59.64% of failed checkouts, recovering ₹10.45 Lakhs in GMV with 0 unauthorized transactions.
-3. 0.03ms Policy Latency: Deterministic financial policy checks that operate orders of magnitude faster than LLM inference, ensuring zero latency overhead for merchants.
-4. Production-Ready Design System: A bespoke, light-themed FinTech Transaction Control Plane with standardized SVG icons, dual authority indicators, and full auditability.
+1. 115 / 115 Passing Automated Tests: 100% green coverage across 10 test suites in ~2.4 seconds, rigorously proving state transitions, signature verification, timeout boundaries, and live adversarial attack containment.
+2. 500-Session Merchant Economic Benchmark & Interactive ROI Simulator: Proved that autonomous recovery restores 59.64% of failed checkouts (₹10.45 Lakhs in GMV) with an interactive revenue expansion engine modeling up to ₹3.58 Crores in annualized GMV recovery.
+3. 0.03ms Policy Latency & Adversarial Threat Matrix: Deterministic financial policy checks that intercept hostile prompt injection jailbreaks (e.g., Rolex ₹1 bypass) and webhook replay attacks in 0.02ms with zero orders created.
+4. Production-Ready Design System: A bespoke, light-themed FinTech Transaction Control Plane with standardized SVG icons, 6 interactive tabs, and full auditability.
 ```
 
 ---

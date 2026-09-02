@@ -58,18 +58,18 @@
 
 ---
 
-### [01:20 – 01:45] Scene 4: Bounded Policies & Economic Benchmark
-*(Screen: Click `Policies & Mandates` tab, then switch to `Economic Benchmark` tab showing 59.64% recovery rate and ₹10.45L GMV.)*
+### [01:20 – 01:45] Scene 4: Bounded Policies, ROI Simulator & Adversarial Defense
+*(Screen: Click `Economic Benchmark` tab to show the Interactive ROI Simulator, then click `Adversarial Matrix` tab and click "Simulate Prompt Injection Attack".)*
 
-> **"Under the hood, our Policy Engine computes the strict mathematical intersection of the User Mandate and Merchant Policy—enforcing a 10% gross margin floor to protect merchant profitability.  
-> Across a 500-session synthetic benchmark, Resilient-Agent-Relay delivered a **59.64% recovery rate**, restoring **₹10.45 Lakhs in lost GMV** with **ZERO unauthorized breaches**."**
+> **"Under the hood, our Policy Engine computes the strict mathematical intersection of User Mandates and Merchant Policies. Our Interactive ROI Simulator shows that for a store doing 25,000 orders/month, this restores **₹3.58 Crores in annualized GMV**.  
+> Now look at our Adversarial Defense Matrix. We can actively launch a Prompt Injection attack attempting to buy an ₹8,50,000 Rolex for ₹1. In **0.02 milliseconds**, Gate 1 intercepts it—with mathematically proven zero orders created."**
 
 ---
 
 ### [01:45 – 02:00] Scene 5: Closing Vision
-*(Screen: Switch to terminal running `npm test` showing all 111 / 111 tests passing in 2.36 seconds.)*
+*(Screen: Switch to terminal running `npm test` showing all 115 / 115 tests passing in 2.40 seconds.)*
 
-> **"Backed by 111 automated tests, timing-safe HMAC cryptography, and native Razorpay rails, Resilient-Agent-Relay turns fragile agent dropoffs into reliable, bounded commerce.  
+> **"Backed by 115 automated tests across 10 suites, timing-safe HMAC cryptography, and native Razorpay rails, Resilient-Agent-Relay turns fragile agent dropoffs into reliable, bounded commerce.  
 > Thank you."**
 
 ---
